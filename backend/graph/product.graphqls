@@ -1,0 +1,13 @@
+type Product{
+  id: ID!
+  name: String!
+  price: Int!
+  description: String!
+  image: String!
+  rating: String!
+  sold: Int!
+}
+
+extend type Query{
+  product(id: ID!): Product!
+}
