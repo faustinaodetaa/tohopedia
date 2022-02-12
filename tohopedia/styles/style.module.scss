@@ -1,0 +1,78 @@
+@font-face {
+    font-family: Poppins;
+    src: url(../public/Poppins-Medium.ttf);
+    font-weight: normal;
+  }
+
+$darkgreen: #42B549;
+$lightgreen: #84CB66;
+$font: Poppins;
+
+
+.loginFormContainer{
+    border: 2px solid rgb(221, 216, 216);
+    width: 30%;
+    border-radius: 10px;
+    box-shadow: rgb(221, 216, 216) 5px 5px ;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    padding: 30px 0;
+    font-family: $font;
+    // margin-left: 15%;
+    margin-top: 60px;
+    margin-bottom: 60px;
+}
+
+.formContainer{
+    display: flex;
+    justify-content: space-around;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    justify-items: center;
+    font-family: $font;
+    padding: 50px 0;
+    background-image: "url(/image.png)";
+    // background-repeat: 'no-repeat'
+}
+
+.submit{
+    background-color: $darkgreen;
+    width: 30%;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-family: $font;
+}
+
+.title{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 30px;
+}
+
+.subtitle{
+    color: $darkgreen;
+    // margin-top: 30px; 
+}
+
+.example{
+    font-size: small;
+    color: grey;
+}
+
+.forgot{
+    color: $darkgreen;
+    font-size: small;
+}
+
+.inputCheckbox{
+    display: flex;
+    justify-content: space-evenly;
+}

@@ -1,0 +1,55 @@
+@font-face {
+  font-family: Poppins;
+  src: url(../public/Poppins-Medium.ttf);
+  font-weight: normal;
+}
+
+$darkgreen: #42B549;
+$lightgreen: #84CB66;
+$font: Poppins;
+
+.container{
+  font-family: $font
+}
+
+.list{
+  list-style: none;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.login{
+  background-color: $lightgreen;
+  border: 0px;
+  border-radius: 5px;
+  color: white;
+  width: 150%;
+  font-family: $font
+
+}
+
+.register{
+  background-color: $darkgreen;
+  border: 0px;
+  border-radius: 5px;
+  color: white;
+  width: 150%;
+  font-family: $font
+}
+
+.cart{
+  border: 0px;
+  background-color: transparent;
+}
+
+.search{
+  border: 0px;
+  background-color: transparent;
+}
+
+.searchBar{
+  width: 150%;
+  border: none;
+  border-radius: 5px;
+  
+}
