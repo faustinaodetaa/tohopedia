@@ -2,6 +2,14 @@
 #
 # https://gqlgen.com/getting-started/
 
+directive @goField(forceResolver: Boolean, name: String) on FIELD_DEFINITION | INPUT_FIELD_DEFINITION
+
+# new directive
+directive @auth on FIELD_DEFINITION
+
+scalar Any
+scalar Date
+
 type User {
   id: ID!
   email: String!
@@ -9,16 +17,26 @@ type User {
   username: String!
   name: String!
   role: String!
+  phone: String!
+  gender: String!
+  dob: Date!
+  picture: String!
 }
 
+
+
 type Query {
-  user(id:ID!): User!
+  user(id: ID!): User! @goField(forceResolver: true)
+  # Add Protected Resource
+  protected: String! @goField(forceResolver: true) @auth
   users: [User!]!
+  getCurrentUser: User! @goField(forceResolver: true) @auth
 }
 
 type Mutation {
   createUser(input: NewUser!): User!
   updateUser(id: ID!, input: NewUser!): User!
+  auth: AuthOps! @goField(forceResolver: true)
 }
 
 input NewUser{
@@ -27,4 +45,10 @@ input NewUser{
   username: String!
   name: String!
   role: String!
+}
+
+
+type AuthOps {
+  login(email: String!, password: String!): Any! @goField(forceResolver: true)
+  register(input: NewUser!): Any! @goField(forceResolver: true)
 }

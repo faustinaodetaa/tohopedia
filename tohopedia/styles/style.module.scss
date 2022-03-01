@@ -49,6 +49,7 @@ $font: Poppins;
     border-radius: 5px;
     color: white;
     font-family: $font;
+    cursor: pointer;
 }
 
 .title{
@@ -75,4 +76,9 @@ $font: Poppins;
 .inputCheckbox{
     display: flex;
     justify-content: space-evenly;
+}
+
+.error{
+    color: red;
+    font-size: x-small;
 }

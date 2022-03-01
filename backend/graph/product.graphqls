@@ -1,13 +1,60 @@
-type Product{
+scalar Time
+
+type Category{
   id: ID!
   name: String!
-  price: Int!
-  description: String!
-  image: String!
-  rating: String!
-  sold: Int!
+  products: [Product!]! @goField(forceResolver:true)
 }
 
+type Product {
+  id: ID!
+  name: String!
+  images: [ProductImage!]! @goField(forceResolver: true)
+  description: String!
+  price: Int!
+  discount: Float!
+  stock: Int!
+  metadata: String!
+  createdAt: Time!
+  category: Category! @goField(forceResolver: true)
+  shop: Shop! @goField(forceResolver: true)
+}
+
+type ProductImage {
+  id: ID!
+  image: String!
+  product: Product! @goField(forceResolver: true)
+}
+
+
+
 extend type Query{
-  product(id: ID!): Product!
+  product(id: ID!): Product! @goField(forceResolver: true)
+  getAllCategory: [Category!]!
+}
+
+extend type Mutation{
+  createCategory(input: NewCategory!): Category!
+  createProduct(input: NewProduct!): Product!
+  createImage(input: NewProductImage!): ProductImage!
+}
+
+input NewCategory{
+  name: String!
+}
+
+input NewProduct{
+  name: String!
+  images: String
+  description: String!
+  price: Int!
+  discount: Float!
+  stock: Int!
+  metadata: String!
+  category: String!
+}
+
+input NewProductImage{
+  image: String!
+  product: String!
 }

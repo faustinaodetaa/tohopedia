@@ -1,0 +1,20 @@
+@font-face {
+  font-family: Poppins;
+  src: url(../public/Poppins-Medium.ttf);
+  font-weight: normal;
+}
+
+$darkgreen: #42B549;
+$lightgreen: #84CB66;
+$font: Poppins;
+
+
+
+.container{
+  font-family: $font;
+}
+
+.card{
+  font-family: $font;
+
+}

@@ -9,45 +9,58 @@ import (
 
 	"github.com/faustinaodetaa/backend/graph/generated"
 	"github.com/faustinaodetaa/backend/graph/model"
-	"github.com/google/uuid"
+	"github.com/faustinaodetaa/backend/service"
+	"github.com/vektah/gqlparser/v2/gqlerror"
 )
 
+func (r *authOpsResolver) Login(ctx context.Context, obj *model.AuthOps, email string, password string) (interface{}, error) {
+	return service.UserLogin(ctx, email, password)
+}
+
+func (r *authOpsResolver) Register(ctx context.Context, obj *model.AuthOps, input model.NewUser) (interface{}, error) {
+	return service.UserRegister(ctx, input)
+}
+
 func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*model.User, error) {
-	model := &model.User{
-		ID:       uuid.NewString(),
-		Email:    input.Email,
-		Password: input.Password,
-		Username: input.Username,
-		Name:     input.Name,
-		Role:     input.Role,
-	}
-
-	err := r.DB.Create(model).Error
-
-	return model, err
-}
-
-func (r *mutationResolver) UpdateUser(ctx context.Context, id string, input model.NewUser) (*model.User, error) {
-	var model *model.User
-
-	if err := r.DB.First(model, "id = ?", id).Error; err != nil {
-		return nil, err
-	}
-	model.Email = input.Email
-	model.Name = input.Name
-	model.Password = input.Password
-	model.Username = input.Username
-	return model, r.DB.Save(model).Error
-}
-
-func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
-func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
-	var models []*model.User
-	return models, r.DB.Find(&models).Error
+func (r *mutationResolver) UpdateUser(ctx context.Context, id string, input model.NewUser) (*model.User, error) {
+	panic(fmt.Errorf("not implemented"))
 }
+
+func (r *mutationResolver) Auth(ctx context.Context) (*model.AuthOps, error) {
+	return &model.AuthOps{}, nil
+}
+
+func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error) {
+	return service.UserGetByID(ctx, id)
+}
+
+func (r *queryResolver) Protected(ctx context.Context) (string, error) {
+	return "Success", nil
+}
+
+func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
+	// var models []*model.User
+	// return models, r.DB.Find(&models).Error
+	return service.Users(ctx)
+}
+
+func (r *queryResolver) GetCurrentUser(ctx context.Context) (*model.User, error) {
+	if ctx.Value("auth") == nil {
+		return nil, &gqlerror.Error{
+			Message: "Error, token gaada",
+		}
+	}
+
+	id := ctx.Value("auth").(*service.JwtCustomClaim).ID
+
+	return service.UserGetByID(ctx, id)
+}
+
+// AuthOps returns generated.AuthOpsResolver implementation.
+func (r *Resolver) AuthOps() generated.AuthOpsResolver { return &authOpsResolver{r} }
 
 // Mutation returns generated.MutationResolver implementation.
 func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResolver{r} }
@@ -55,5 +68,6 @@ func (r *Resolver) Mutation() generated.MutationResolver { return &mutationResol
 // Query returns generated.QueryResolver implementation.
 func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 
+type authOpsResolver struct{ *Resolver }
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }

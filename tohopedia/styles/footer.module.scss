@@ -1,0 +1,47 @@
+@font-face {
+  font-family: Poppins;
+  src: url(../public/Poppins-Medium.ttf);
+  font-weight: normal;
+}
+
+$darkgreen: #42B549;
+$lightgreen: #84CB66;
+$grey: #a0a39e;
+$font: Poppins;
+
+.social{
+  display: flex;
+
+}
+
+.list{
+  display: flex;
+  justify-content: space-evenly;
+  font-family: Poppins;
+  box-shadow: rgba(128, 128, 128, 0.226) 2px -5px;
+
+}
+
+.buttonSelected{
+  background-color: $darkgreen;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-family: Poppins;
+
+}
+
+.buttonSecondary{
+  background-color: $grey;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-family: Poppins;
+
+
+}
+
+.container{
+  box-shadow: rgba(128, 128, 128, 0.226) 2px 5px;
+
+}

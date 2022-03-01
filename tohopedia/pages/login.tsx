@@ -1,25 +1,66 @@
 import type { NextPage } from 'next';
 import styles from '../styles/style.module.scss';
 import Image from 'next/image';
-import { gql, useQuery } from '@apollo/client';
+import { gql, useMutation, useQuery } from '@apollo/client';
+import { useState } from 'react';
+import { setCookies } from 'cookies-next'
+import Router from "next/router";
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from "yup"
 
 const Login: NextPage = () => {
+    
 
-    const USER_QUERY = gql `
-    query GetAllUser{
-        users{
-            id
-            email
-            password
-            username
-            name
-            
+    const LOGIN_QUERY = gql `
+    mutation auth($email: String!, $password: String!){
+        auth{
+            login(email:$email, password:$password)
         }
-        }
+    }
     `
 
-    const{loading, error, data} = useQuery(USER_QUERY)
-console.log(data)
+    const[login, {loading, error, data}] = useMutation(LOGIN_QUERY)
+
+    const schema = yup.object({
+        email: yup.string().required(),
+        password: yup.string().required(),
+    }).required()
+
+    const { register, handleSubmit, formState:{errors} } = useForm({
+        resolver: yupResolver(schema)
+    });
+
+    async function onSubmit(data:any){
+        console.log('tes login')
+        console.log(data.email)
+        console.log(data.password)
+        console.log(data)
+        
+
+        // alert('hi')
+        try {
+            await login({
+                variables:{
+                    email: data.email,
+                    password: data.password
+                }
+            })
+            
+        } catch (error) {
+            console.log(error)
+            
+        }
+        
+    }
+
+    if(data){
+        setCookies('currUser', data.auth.login.token)
+        Router.push('/home')
+    }
+
+
+
     return(
         <div className={styles.container}>
             <header>
@@ -34,17 +75,20 @@ console.log(data)
                     <h3 className={styles.subtitle}><a href="./register">Sign Up</a></h3>
                 </div>
                 <div className={styles.formContent}>
-                    <form action="">
+                    <form onSubmit={handleSubmit(onSubmit)}>
                         <div className={styles.input}>
                             <label htmlFor="email">Email</label>
                             <br />
-                            <input type="email" name="email" id="email" />
+                            <input type="email" id="email" {...register("email")}/>
+                            <p className={styles.error}>{errors.email?.message}</p>
                         </div>
                         <br />
                         <div className={styles.input}>
                             <label htmlFor="password">Password</label>
                             <br />
-                            <input type="password" name="password" id="password" />
+                            <input type="password" id="password" {...register("password")}/>
+                            <p className={styles.error}>{errors.password?.message}</p>
+
                         </div>
                         <br />
                         <div className={styles.inputCheckbox}>
@@ -59,7 +103,9 @@ console.log(data)
                             </label>
                         </div>
                         <div className={styles.submitContainer}>
-                            <input type="button" className={styles.submit} value="Login" />
+                            <button type='submit' className={styles.submit}>
+                                Login
+                            </button>
                         </div>
                     </form>
                 </div>

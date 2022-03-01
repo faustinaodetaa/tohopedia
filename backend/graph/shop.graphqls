@@ -1,0 +1,47 @@
+type Shop{
+  id: ID!
+  name: String!
+  nameSlug: String!
+  address: String!
+  phone: String!
+  slogan: String
+  description: String
+  profile: String
+  openHour: Time
+  closeHour: Time
+  isOpen: Boolean
+  points: Int
+  user: User! @goField(forceResolver: true)
+  products: Product @goField(forceResolver: true)
+}
+
+extend type Mutation{
+  createShop(input: NewShop!): Shop!
+  updateShop(id: ID! input: UpdateShop!): Shop!
+
+}
+extend type Query{
+  getShop: Shop! @goField(forceResolver: true)@auth
+
+}
+
+input NewShop{
+  name: String!
+  nameSlug: String!
+  address: String!
+  user: String!
+  phone: String!
+}
+
+input UpdateShop{
+  name: String!
+  nameSlug: String!
+  profile: String!
+  slogan: String!
+  description: String!
+  openHour: Time!
+  closeHour: Time!
+  isOpen: Boolean!
+}
+
+

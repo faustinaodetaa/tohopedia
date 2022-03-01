@@ -9,7 +9,8 @@ $lightgreen: #84CB66;
 $font: Poppins;
 
 .container{
-  font-family: $font
+  font-family: $font;
+  box-shadow: rgba(128, 128, 128, 0.226) 2px 5px;
 }
 
 .list{
@@ -40,16 +41,67 @@ $font: Poppins;
 .cart{
   border: 0px;
   background-color: transparent;
+  cursor: pointer;
+
 }
 
 .search{
   border: 0px;
   background-color: transparent;
+  cursor: pointer;
+  margin-top: -20px;
 }
 
 .searchBar{
-  width: 150%;
-  border: none;
+  width: 250%;
+  height: 50%;
+  border: grey 2px solid;
   border-radius: 5px;
   
+}
+
+.searchContainer{
+  display: flex;
+  width: 40%;
+
+}
+.buttons{
+  display: flex;
+  width: 15%;
+  height: 30px;
+}
+
+.dropdownContent{
+  display: none;  
+  cursor: pointer;
+}
+
+.dropdownTitle{
+  cursor: pointer;
+
+}
+
+.dropdownTitle:hover{
+  background-color: rgba(128, 128, 128, 0.123);
+  // background-color: transparent;
+  border-radius: 15%;
+}
+
+.dropdownTitle:hover .dropdownContent{
+  display: block;
+  cursor: pointer;
+  
+  border-radius: 15%;
+
+  
+}
+
+.dropdownContent:hover{
+  background-color: rgba(128, 128, 128, 0.473);
+
+}
+
+.profile{
+  display: flex;
+  border-radius: 15%;
 }
