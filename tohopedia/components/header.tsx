@@ -10,16 +10,24 @@ const Header: NextPage = () => {
             <header>
               <li className={styles.list}>
                 <ul>
-                  <Image src="/tohopedia_logo.png" alt="" width={200} height={50}/>
+                  <Image src="/tohopedia_logo.png" className={styles.logo} alt="" width={200} height={50}/>
                 </ul>
-                <ul>
-                  <p>Category</p>
-                </ul>
-                <ul className={styles.searchContainer}>
-                  <input type="text" name="search" id="" className={styles.searchBar} placeholder='Search Product'/>
-                </ul>
-                  <h2><FaSearch></FaSearch></h2>
-                  <h2><FaShoppingCart></FaShoppingCart></h2>
+                <div className={styles.searchRes}>
+                  <ul>
+                    <p className={styles.category}>Category</p>
+                  </ul>
+                  <ul className={styles.searchContainer}>
+                    <input type="text" name="search" id="" className={styles.searchBar} placeholder='Search Product'/>
+                  </ul>
+                    <h2><FaSearch></FaSearch></h2>
+                  
+                </div>
+                <div className={styles.dropdownTitle}>
+                    <h2 ><FaShoppingCart></FaShoppingCart></h2>
+                    
+                    <div className={styles.dropdownContentContainer}>No Items in Cart</div>
+                    
+                  </div>
                 
                 <ul>
                   <button className={styles.login}><a href="/login">Login</a></button>
@@ -29,8 +37,7 @@ const Header: NextPage = () => {
                     <button className={styles.register}><a href="/register">Register</a></button>                  
                   </ul>
                   <ul>
-                  <p><FaMapMarkerAlt></FaMapMarkerAlt> address</p>
- 
+                  <p><FaMapMarkerAlt></FaMapMarkerAlt> Alam Sutera</p>
                   </ul>
                 </div>
 

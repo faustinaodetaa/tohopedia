@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"strings"
 
 	"github.com/faustinaodetaa/backend/config"
 	"github.com/faustinaodetaa/backend/graph/model"
@@ -17,12 +16,15 @@ func UserCreate(ctx context.Context, input model.NewUser) (*model.User, error) {
 	input.Password = tools.HashPassword(input.Password)
 
 	user := model.User{
-		ID:       uuid.New().String(),
-		Name:     input.Name,
-		Email:    strings.ToLower(input.Email),
+		ID:       uuid.NewString(),
+		Email:    input.Email,
 		Password: input.Password,
 		Username: input.Username,
-		Role:     input.Role,
+		Name:     input.Name,
+		Role:     "member",
+		Phone:    input.Phone,
+		Gender:   input.Gender,
+		Dob:      input.Dob,
 	}
 
 	if err := db.Model(user).Create(&user).Error; err != nil {

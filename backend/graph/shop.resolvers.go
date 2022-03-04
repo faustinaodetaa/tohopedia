@@ -49,8 +49,8 @@ func (r *mutationResolver) CreateShop(ctx context.Context, input model.NewShop) 
 }
 
 func (r *mutationResolver) UpdateShop(ctx context.Context, id string, input model.UpdateShop) (*model.Shop, error) {
-	model := new(model.Shop)
 	db := config.GetDB()
+	model := new(model.Shop)
 
 	// userId := ctx.Value("auth").(*service.JwtCustomClaim).ID
 	if err := db.First(model, "id = ?", id).Error; err != nil {
@@ -90,7 +90,13 @@ func (r *queryResolver) GetShop(ctx context.Context) (*model.Shop, error) {
 }
 
 func (r *shopResolver) User(ctx context.Context, obj *model.Shop) (*model.User, error) {
-	panic(fmt.Errorf("not implemented"))
+	db := config.GetDB()
+	var user *model.User
+	if err := db.Where("id = ?", obj.UserID).Find(&user).Error; err != nil {
+		return nil, err
+	}
+
+	return user, nil
 }
 
 func (r *shopResolver) Products(ctx context.Context, obj *model.Shop) (*model.Product, error) {

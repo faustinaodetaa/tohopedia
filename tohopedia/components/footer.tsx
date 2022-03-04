@@ -5,9 +5,9 @@ import Image from 'next/image';
 const Footer: NextPage = () => {
     return(
         <div className={styles.container}>
-            <footer>
+            <footer className={styles.footerContainer}>
               <li className={styles.list}>
-                <div>
+                <div className={styles.titles}>
                 <ul>
                   <b>Tokopedia</b>
                 </ul>
@@ -110,7 +110,7 @@ const Footer: NextPage = () => {
                 </div>
                 
                 </div>
-                <ul>
+                <ul className={styles. rightNav}>
                   <Image src="/footer.jpg" alt="" width={200} height={100}/>
                   <p>&copy; 2009-2021, PT Tohopedia</p>
                 <button className={styles.buttonSecondary}>Indonesia</button>

@@ -61,7 +61,7 @@ const EditShop: NextPage = () => {
     console.log(d?.getShop?.id)
     
     const [update, {loading, error, data}] = useMutation(EDIT_SHOP_QUERY)
-    console.log(data);
+    // console.log(data);
 
     const schema = yup.object({
         name: yup.string().required(),
@@ -74,8 +74,25 @@ const EditShop: NextPage = () => {
             resolver: yupResolver(schema)
         })
 
+        let profilepic:any
+        const handleImage = async (e: any) => {
+          const image = e.target.files[0]
+          profilepic = (await convertToBase64(image)) as string
+      
+          console.log(profilepic) 
+        }
     async function onSubmit(data:any){
-        console.log(data)
+        console.log(profilepic)
+        console.log(d?.getShop?.id)
+        console.log(data.name)
+        console.log(data.slug)
+        console.log(data.slogan)
+        console.log(data.description)
+        console.log(data.openHour)
+        console.log(data.closeHour)
+        console.log(data.isOpen)
+
+
 
         try{
             await update({
@@ -83,7 +100,7 @@ const EditShop: NextPage = () => {
                   id: d?.getShop?.id,
                   name: data.name,
                   nameSlug: data.slug,
-                  profile: data.profile,
+                  profile: profilepic,
                   slogan: data.slogan,
                   description: data.description,
                   openHour: data.openHour,
@@ -100,13 +117,6 @@ const EditShop: NextPage = () => {
         console.log("updated")
     }
     
-    let profilepic = null
-    const handleImage = async (e: any) => {
-      const image = e.target.files[0]
-      profilepic = (await convertToBase64(image)) as string
-  
-      console.log(profilepic) 
-    }
   return(
       <>
       <LoggedHeader/>
@@ -198,9 +208,11 @@ const EditShop: NextPage = () => {
                         </div>
                         <br />
                         <div className={styles.input}>
-                            <label htmlFor="status">Edit open status</label>
-                            <br />
-                            <input type="text" id="isOpen" {...register("isOpen")} placeholder={d?.getShop?.isOpen.toString()}/>
+
+                            <input type="checkbox" {...register("isOpen")}  id="isOpen" />
+                            <label htmlFor="isOpen">Is the Shop Open?</label>
+
+                            {/* <input type="text" id="isOpen" {...register("isOpen")} placeholder={d?.getShop?.isOpen.toString()}/> */}
                             <p className={styles.error}></p>
                         </div>
                         <br />

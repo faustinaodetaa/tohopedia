@@ -1,0 +1,37 @@
+@font-face {
+  font-family: Poppins;
+  src: url(../public/Poppins-Medium.ttf);
+  font-weight: normal;
+}
+
+$darkgreen: #42B549;
+$lightgreen: #84CB66;
+$font: Poppins;
+
+.container{
+  font-family: $font;
+  // display: grid;
+  // grid-template-columns: repeat(2,1fr);
+  // grid-auto-rows: auto;
+  padding: 60px 10px;
+  width: 250px;
+  
+
+}
+
+.productContainer{
+  border-radius: 5%;
+  border: rgba(128, 128, 128, 0.336) 1px solid;
+  box-shadow: rgba(128, 128, 128, 0.226) 5px 5px;
+  padding: 30px;
+  
+  
+}
+
+@media screen and (max-width:400px){
+  .container{
+    padding: 30px 5px;
+    width: 200px;
+  }
+}
+

@@ -7,6 +7,7 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/faustinaodetaa/backend/config"
 	"github.com/faustinaodetaa/backend/graph/generated"
 	"github.com/faustinaodetaa/backend/graph/model"
 	"github.com/faustinaodetaa/backend/service"
@@ -25,8 +26,22 @@ func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) 
 	panic(fmt.Errorf("not implemented"))
 }
 
-func (r *mutationResolver) UpdateUser(ctx context.Context, id string, input model.NewUser) (*model.User, error) {
-	panic(fmt.Errorf("not implemented"))
+func (r *mutationResolver) UpdateUser(ctx context.Context, id string, input model.UpdateUser) (*model.User, error) {
+	db := config.GetDB()
+	model := new(model.User)
+
+	if err := db.First(model, "id = ?", id).Error; err != nil {
+		return nil, err
+	}
+
+	model.Email = input.Email
+	model.Picture = input.Picture
+	model.Name = input.Name
+	model.Dob = input.Dob
+	model.Gender = input.Gender
+	model.Phone = input.Phone
+
+	return model, db.Save(model).Error
 }
 
 func (r *mutationResolver) Auth(ctx context.Context) (*model.AuthOps, error) {

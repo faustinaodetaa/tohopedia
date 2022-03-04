@@ -53,7 +53,7 @@ $font: Poppins;
 }
 
 .searchBar{
-  width: 250%;
+  // width: 250%;
   height: 50%;
   border: grey 2px solid;
   border-radius: 5px;
@@ -62,7 +62,7 @@ $font: Poppins;
 
 .searchContainer{
   display: flex;
-  width: 40%;
+  // width: 40%;
 
 }
 .buttons{
@@ -74,6 +74,7 @@ $font: Poppins;
 .dropdownContent{
   display: none;  
   cursor: pointer;
+
 }
 
 .dropdownTitle{
@@ -85,12 +86,17 @@ $font: Poppins;
   background-color: rgba(128, 128, 128, 0.123);
   // background-color: transparent;
   border-radius: 15%;
+  
 }
 
-.dropdownTitle:hover .dropdownContent{
-  display: block;
+.dropdownContentContainer{
+  // display: flex;
+  display: none;
+}
+
+.dropdownTitle:hover .dropdownContentContainer{
+  display: flex;
   cursor: pointer;
-  
   border-radius: 15%;
 
   
@@ -103,5 +109,137 @@ $font: Poppins;
 
 .profile{
   display: flex;
+  // border-radius: 15%;
+}
+
+.img{
+  border-radius: 50%;
+  overflow: hidden;
+  object-fit: cover;
+}
+
+.input{
+  display: flex;
+  width: 250%;
+}
+
+.dropdownProfile{
+  display: none;
+}
+
+.dropdownTitle:hover .dropdownProfile{
+  display: block;
+  cursor: pointer;
   border-radius: 15%;
+
+  
+}
+
+.icons{
+  
+  display: flex;
+}
+
+.leftNav{
+  display: flex;
+}
+
+.profileMenu{
+  display: flex;
+}
+
+@media screen and (max-width: 400px){
+  // .list{
+  //   display: flex;
+  //   flex-direction: column;
+  // }
+
+  .searchContainer{
+    display: flex;
+    // width: 100px;
+    padding-left: 50px;
+    height: 50px;
+  }
+
+  // .logo{
+  //   display: flex;
+  //   justify-content: center;
+  // }
+
+  .searchRes{
+    display: flex;
+  }
+  .container{
+    overflow: auto;
+    white-space: nowrap;
+    // width: fit-content;
+  }
+  .category{
+    display: none;
+  }
+
+  .register{
+    width: 100px;
+  }
+
+  .searchContainer{
+    display: flex;
+  }
+
+  
+
+  .dropdownContent{
+    display: none;  
+    cursor: pointer;
+  
+  }
+  
+  .dropdownTitle{
+    cursor: pointer;
+  
+  }
+  
+  .dropdownTitle:hover{
+    background-color: transparent;
+    // background-color: transparent;
+    border-radius: 15%;
+    
+  }
+  
+  .dropdownContentContainer{
+    // display: flex;
+    display: none;
+  }
+  
+  .dropdownTitle:hover .dropdownContentContainer{
+    display: none;
+    cursor: pointer;
+    border-radius: 15%;
+  
+    
+  }
+  
+  .dropdownContent:hover{
+    background-color: transparent;
+  
+  }
+
+  
+.dropdownProfile{
+  display: none;
+}
+
+.dropdownTitle:hover .dropdownProfile{
+  display: none;
+  cursor: pointer;
+  border-radius: 15%;
+
+  
+}
+
+.icons{
+  display: flex;
+}
+  
+
 }

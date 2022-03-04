@@ -1,0 +1,54 @@
+@font-face {
+  font-family: Poppins;
+  src: url(../public/Poppins-Medium.ttf);
+  font-weight: normal;
+}
+
+$darkgreen: #42B549;
+$lightgreen: #84CB66;
+$font: Poppins;
+
+
+.productContainer{
+  padding: 30px;
+  font-family: $font;
+  margin: 10px;
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.button{
+  background-color: $darkgreen;
+  border: 0px;
+  border-radius: 5px;
+  color: white;
+  font-family: $font
+}
+
+.img{
+  border-radius: 15px;
+}
+
+.buttonSecondary{
+  border-color: $lightgreen;
+  background-color: white;
+  border-radius: 5px;
+  color: $lightgreen;
+  font-family: $font;
+  margin: 10px 0;
+}
+
+.icon{
+  display: flex;
+  gap: 10px;
+}
+
+@media screen and (max-width:400px){
+  .img{
+    border-radius: 10px;
+  }
+
+  .productDetail{
+    font-size: smaller;
+  }
+}

@@ -76,19 +76,23 @@ func (r *mutationResolver) CreateImage(ctx context.Context, input model.NewProdu
 		}
 	}
 
-	product := new(model.Product)
-
 	model := &model.ProductImage{
 		ID:        uuid.NewString(),
 		Image:     input.Image,
-		ProductID: product.ID,
+		ProductID: input.Product,
 	}
 	err := db.Create(model).Error
 	return model, err
 }
 
 func (r *productResolver) Images(ctx context.Context, obj *model.Product) ([]*model.ProductImage, error) {
-	panic(fmt.Errorf("not implemented"))
+	db := config.GetDB()
+	var image []*model.ProductImage
+	if err := db.Where("product_id = ?", obj.ID).Find(&image).Error; err != nil {
+		return nil, err
+	}
+
+	return image, nil
 }
 
 func (r *productResolver) Category(ctx context.Context, obj *model.Product) (*model.Category, error) {
@@ -102,30 +106,30 @@ func (r *productResolver) Category(ctx context.Context, obj *model.Product) (*mo
 }
 
 func (r *productResolver) Shop(ctx context.Context, obj *model.Product) (*model.Shop, error) {
-	if ctx.Value("auth") == nil {
-		return nil, &gqlerror.Error{
-			Message: "Error, token gaada",
-		}
-	}
-
 	db := config.GetDB()
-
-	var shop model.Shop
-	userId := ctx.Value("auth").(*service.JwtCustomClaim).ID
-
-	if err := db.Model(shop).Where("user_id = ?", userId).Take(&shop).Error; err != nil {
+	var shop *model.Shop
+	if err := db.Where("id = ?", obj.ShopID).Find(&shop).Error; err != nil {
 		return nil, err
 	}
 
-	return &shop, nil
+	return shop, nil
 }
 
 func (r *productImageResolver) Product(ctx context.Context, obj *model.ProductImage) (*model.Product, error) {
-	panic(fmt.Errorf("not implemented"))
+	db := config.GetDB()
+	var product *model.Product
+	if err := db.Where("id = ?", obj.ProductID).Find(&product).Error; err != nil {
+		return nil, err
+	}
+
+	return product, nil
 }
 
 func (r *queryResolver) Product(ctx context.Context, id string) (*model.Product, error) {
-	panic(fmt.Errorf("not implemented"))
+	db := config.GetDB()
+
+	model := new(model.Product)
+	return model, db.First(model, "id = ?", id).Error
 }
 
 func (r *queryResolver) GetAllCategory(ctx context.Context) ([]*model.Category, error) {
@@ -133,6 +137,27 @@ func (r *queryResolver) GetAllCategory(ctx context.Context) ([]*model.Category, 
 
 	var models []*model.Category
 	return models, db.Find(&models).Error
+}
+
+func (r *queryResolver) GetAllProduct(ctx context.Context) ([]*model.Product, error) {
+	db := config.GetDB()
+
+	var models []*model.Product
+	return models, db.Find(&models).Error
+}
+
+func (r *queryResolver) ProductSearch(ctx context.Context, name string) ([]*model.Product, error) {
+	db := config.GetDB()
+
+	var models []*model.Product
+	return models, db.Where("name LIKE ?", "%"+name+"%").Find(&models).Error
+}
+
+func (r *queryResolver) GetProductByShop(ctx context.Context, shopID string) ([]*model.Product, error) {
+	db := config.GetDB()
+
+	var models []*model.Product
+	return models, db.Where("shop_id = ?", shopID).Find(&models).Error
 }
 
 // Category returns generated.CategoryResolver implementation.

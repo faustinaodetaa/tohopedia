@@ -1,16 +1,14 @@
 import type { NextPage } from 'next';
 import styles from '../styles/shop.module.scss';
-import LoggedHeader from '../components/loggedHeader';
-import Header from '../components/header';
-import Footer from '../components/footer';
+import LoggedHeader from '../../components/loggedHeader';
+import Header from '../../components/header';
+import Footer from '../../components/footer';
 import React from 'react'
 import { getCookie } from 'cookies-next';
 import { FaBox, FaCog, FaComment, FaHome } from "react-icons/fa";
 import { gql, useQuery } from '@apollo/client';
-import ProuctCard from '../components/card';
+// import ProuctCard from '../components/card';
 import Image from 'next/image';
-import Card from '../components/card';
-import Link from 'next/link';
 
 
 const Shop: NextPage = () => {
@@ -30,35 +28,30 @@ const Shop: NextPage = () => {
   }
   `
   const GET_ALL_PRODUCT = gql `
-    query GetProductByShop($shop:String!){
-      getProductByShop(shopID:$shop){
-        id
+    query GetAllProduct{
+      getAllProduct{
         name
-        images{
-          image
-        }
         description
         price
         discount
         stock
-        metadata
         category{
           name
         }
         shop{
           name
         }
+        images{
+          id
+          image
+        }
       }
     }
   `
   
     const {loading: l, error: e, data: d} = useQuery(GET_CURRENT_SHOP)
-    const {loading: load, error: err, data: dat} = useQuery(GET_ALL_PRODUCT,{
-      variables:{
-        shop: d?.getShop?.id
-      }
-    })
-    console.log(dat)
+    const {loading: load, error: err, data: dat} = useQuery(GET_ALL_PRODUCT)
+    console.log(dat?.getAllProduct[0].images)
 
     if(load || l ){
       return(
@@ -113,21 +106,16 @@ const Shop: NextPage = () => {
             <p>Description: {d?.getShop?.description}</p>
             <i>{d?.getShop?.isOpen === true ? <i>Shop is Currently Open</i> : <i>Shop is Currently Close</i>}</i>
             <br /> <br /> <br />
-            {dat?.getProductByShop?.map((data:any)=>{
+            {dat?.getAllProduct?.map((data:any)=>{
               return(
                 // <div></div>
-
-                    <Card id={data?.id} name={data?.name} price = {data?.price} category =  {data?.category?.name} image = {data.images[0] ? data?.images[0]?.image : '/image.png'} shop = {data?.shop?.name}></Card>
-
-
-
-                // <div className={styles.cardProduct}>
-
-                //   <Image src={data.images[0] ? data?.images[0]?.image : '/image.png'} className={styles.img} alt="profile" width={50} height={100}/>
-                //   <h3>{data?.name}</h3>
-                //   <h5>Rp. {data?.price}</h5>
-                //   <p>Category: {data?.category?.name}</p> 
-                // </div>
+                <div className={styles.cardProduct}>
+                  
+                  <Image src={data.images[0] ? data?.images[0]?.image : '/image.png'} className={styles.img} alt="profile" width={50} height={100}/>
+                  <h3>{data?.name}</h3>
+                  <h5>Rp. {data?.price}</h5>
+                  <p>Category: {data?.category?.name}</p> 
+                </div>
               )
             })}
           </div>

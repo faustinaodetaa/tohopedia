@@ -31,12 +31,20 @@ type ProductImage {
 extend type Query{
   product(id: ID!): Product! @goField(forceResolver: true)
   getAllCategory: [Category!]!
+  getAllProduct: [Product!]!
+  productSearch(name:String!): [Product!]!
+  getProductByShop(shopID: String!): [Product!]!
 }
 
 extend type Mutation{
   createCategory(input: NewCategory!): Category!
   createProduct(input: NewProduct!): Product!
   createImage(input: NewProductImage!): ProductImage!
+}
+
+input ProductFilter{
+  # id: ID!
+  name: String!
 }
 
 input NewCategory{

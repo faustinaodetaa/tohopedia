@@ -14,7 +14,49 @@ $font: Poppins;
   font-family: $font;
 }
 
-.card{
+.cardProduct{
+  border-radius: 5%;
+  border: grey 1px solid;
+  box-shadow: rgba(128, 128, 128, 0.226) 12px 5px;
+  padding: 30px;
+  font-family: $font;
+  margin: 10px;
+  
+}
+.productCard{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  // max-width: 500px;
+
+}
+
+.sideList{
+  list-style: none;
+  // box-shadow: rgba(128, 128, 128, 0.226) 12px 5px;
+  color: #42B549;
+  
+}
+
+.category{
+  font-family: $font;
+  // box-shadow: rgba(128, 128, 128, 0.226) 2px 5px;
+  border: rgba(128, 128, 128, 0.226) 2px solid;
+  border-radius: 10px;
+}
+
+.productContainer{
+  display: flex;
   font-family: $font;
 
+}
+
+.sideContainer{
+  font-family: $font;
+
+}
+
+.cardProductContainer{
+  display: flex;
+  justify-content: center;
 }

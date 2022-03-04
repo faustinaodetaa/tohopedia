@@ -13,6 +13,7 @@ extend type Mutation{
 
 extend type Query{
   getCart: Cart! @goField(forceResolver: true)@auth
+  getCartByUser(user:String!):[Cart!]!
 }
 
 input NewCart{

@@ -58,7 +58,13 @@ type NewUser struct {
 	Password string `json:"password"`
 	Username string `json:"username"`
 	Name     string `json:"name"`
-	Role     string `json:"role"`
+	Phone    string `json:"phone"`
+	Gender   string `json:"gender"`
+	Dob      string `json:"dob"`
+}
+
+type ProductFilter struct {
+	Name string `json:"name"`
 }
 
 type UpdateAddress struct {
@@ -81,4 +87,13 @@ type UpdateShop struct {
 	OpenHour    time.Time `json:"openHour"`
 	CloseHour   time.Time `json:"closeHour"`
 	IsOpen      bool      `json:"isOpen"`
+}
+
+type UpdateUser struct {
+	Email   string `json:"email"`
+	Picture string `json:"picture"`
+	Name    string `json:"name"`
+	Dob     string `json:"dob"`
+	Gender  string `json:"gender"`
+	Phone   string `json:"phone"`
 }

@@ -107,6 +107,31 @@ $font: Poppins;
 
 .shopContainer{
   display: flex;
-  justify-content: space-around;
+  flex-wrap: wrap;
+  justify-content: space-evenly
+}
 
+.cardProduct{
+  border-radius: 5%;
+  border: grey 1px solid;
+  box-shadow: rgba(128, 128, 128, 0.226) 12px 5px;
+  padding: 30px;
+  font-family: $font;
+  margin: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+@media screen and (max-width:400px){
+  .editShopContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .formContainer{
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    margin-left: 40px;
+  }
 }

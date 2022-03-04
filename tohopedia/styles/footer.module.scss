@@ -45,3 +45,34 @@ $font: Poppins;
   box-shadow: rgba(128, 128, 128, 0.226) 2px 5px;
 
 }
+
+@media screen and (max-width:400px){
+  .container{
+    display: flex;
+    flex-direction: row;
+    box-shadow: none;
+    width: fit-content;
+  }
+
+  .social{
+    overflow: auto;
+  }
+
+
+
+  .list{
+    display: inline;
+    justify-content: center;
+    font-family: Poppins;
+    box-shadow: none;
+    
+    }
+
+    .footerContainer{
+      display: flex;
+      justify-content: center;
+    }
+
+  
+
+}

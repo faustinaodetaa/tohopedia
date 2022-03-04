@@ -39,3 +39,51 @@ $font: Poppins;
   font-family: $font;
   cursor: pointer;
 }
+
+
+.dropdownProduct{
+  display: none;
+}
+
+.product:hover .dropdownProduct{
+  display: block;
+}
+
+.dropdownShop{
+  display: none;
+}
+
+.setting:hover .dropdownShop{
+  display: block;
+}
+
+.sideList{
+  list-style: none;
+  
+}
+
+.sideList{
+  li{
+    border-radius: 10px;
+    box-shadow: rgba(128, 128, 128, 0.226) -10px 5px;
+
+  }
+}
+
+.side{
+  border-right-style: solid;
+  border-right-color: rgba(128, 128, 128, 0.226);
+  font-family: $font;
+}
+
+@media screen and(max-width:400px){
+  
+.formContainer{
+  margin-left: 50px;
+}
+
+.addProductContainer{
+  display: flex;
+  flex-direction: column;
+}
+}
