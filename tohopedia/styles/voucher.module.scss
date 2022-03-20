@@ -1,0 +1,192 @@
+@font-face {
+  font-family: Poppins;
+  src: url(../public/Poppins-Medium.ttf);
+  font-weight: normal;
+}
+
+$darkgreen: #42B549;
+$lightgreen: #84CB66;
+$font: Poppins;
+
+
+
+.title{
+  // font-size: medium;
+  width: 50%;
+  text-align: center;
+}
+
+.description{
+  width: 50%;
+  text-align: center;
+}
+
+.container{
+  font-family: $font;
+  justify-content: center;
+  display: inline;
+  margin-right: -400px;
+  margin-top: 100px;
+}
+
+.formContainer{
+  border: 2px solid rgb(221, 216, 216);
+  width: 30%;
+  border-radius: 10px;
+  box-shadow: rgb(221, 216, 216) 5px 5px ;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  padding: 30px 0;
+  font-family: $font;
+  // margin-left: 15%;
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+.addShopContainer{
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.small{
+  color: grey;
+  font-size: x-small;
+}
+
+.submit{
+  background-color: $darkgreen;
+  width: 30%;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  font-family: $font;
+  cursor: pointer;
+}
+
+.dropdownProduct{
+  display: none;
+}
+
+.product:hover .dropdownProduct{
+  display: block;
+}
+
+.dropdownShop{
+  display: none;
+}
+
+.setting:hover .dropdownShop{
+  display: block;
+}
+
+.sideList{
+  list-style: none;
+  
+}
+
+.sideList{
+  li{
+    border-radius: 10px;
+    box-shadow: rgba(128, 128, 128, 0.226) -10px 5px;
+
+  }
+}
+
+.side{
+  border-right-style: solid;
+  border-right-color: rgba(128, 128, 128, 0.226);
+  font-family: $font;
+}
+
+.editShopContainer{
+  display: flex;
+  justify-content: space-around;
+}
+
+.shopContainer{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly
+}
+
+.cardProduct{
+  border-radius: 5%;
+  border: grey 1px solid;
+  box-shadow: rgba(128, 128, 128, 0.226) 12px 5px;
+  padding: 30px;
+  font-family: $font;
+  margin: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.button{
+  background-color: $darkgreen;
+  border: 0px;
+  border-radius: 5px;
+  color: white;
+  font-family: $font
+}
+
+.shopBanner{
+  display: flex;
+  justify-content: space-evenly;
+  border: 1px grey solid;
+  box-shadow: rgba(128, 128, 128, 0.226) 12px 5px;
+  border-radius: 5px;
+  margin: 10px;
+  padding: 10px;
+}
+
+.video{
+  width: 500px;
+  display: flex;
+  justify-content: center;
+  justify-items: center;
+  margin-left: 25%;
+}
+
+.contentHover{
+  display: none;
+}
+
+.titleHover:hover .contentHover{
+  display: block;
+}
+
+.voucherContainer{
+  border: 1px grey solid;
+  border-radius: 5px;
+  padding: 20px;
+  margin-bottom: 10px;
+}
+
+.titleMain{
+  font-family: $font;
+  text-align: center;
+}
+
+@media screen and (max-width:400px){
+  .editShopContainer{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .formContainer{
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    margin-left: 40px;
+  }
+
+  .container{
+    display: none;
+  }
+
+  .voucherContainer{
+    margin: 20px;
+  }
+
+}

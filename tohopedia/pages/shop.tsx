@@ -5,7 +5,7 @@ import Header from '../components/header';
 import Footer from '../components/footer';
 import React from 'react'
 import { getCookie } from 'cookies-next';
-import { FaBox, FaCog, FaComment, FaHome } from "react-icons/fa";
+import { FaBox, FaCog, FaComment, FaHome, FaTicketAlt } from "react-icons/fa";
 import { gql, useQuery } from '@apollo/client';
 import ProuctCard from '../components/card';
 import Image from 'next/image';
@@ -87,7 +87,12 @@ const Shop: NextPage = () => {
                   </a>
                 </li>
                 <li>
-                  <FaComment></FaComment> Chat
+                  <FaComment></FaComment> 
+                  <a href="/chat"> Chat</a>
+                </li>
+                <li>
+                  <FaTicketAlt></FaTicketAlt>
+                  <a href="/voucher"> Voucher Management</a>
                 </li>
                 <li className={styles.product}>
                   <FaBox></FaBox> Product
@@ -115,9 +120,15 @@ const Shop: NextPage = () => {
             <br /> <br /> <br />
             {dat?.getProductByShop?.map((data:any)=>{
               return(
-                // <div></div>
+                <div>
 
-                    <Card id={data?.id} name={data?.name} price = {data?.price} category =  {data?.category?.name} image = {data.images[0] ? data?.images[0]?.image : '/image.png'} shop = {data?.shop?.name}></Card>
+                  <Card id={data?.id} name={data?.name} price = {data?.price} discount = {data?.price - (data?.discount / 100 * data?.price)} disc = {data?.discount} category =  {data?.category?.name} image = {data.images[0] ? data?.images[0]?.image : '/image.png'} shop = {data?.shop?.name}>
+                  </Card>
+                  <button className={styles.button}>Update</button>
+                  <button className={styles.button}>Delete</button>
+
+
+                </div>
 
 
 

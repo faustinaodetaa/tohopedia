@@ -5,6 +5,8 @@ type Address{
   phone: String!
   postalCode: Int!
   user: User! @goField(forceResolver: true)
+  title:String!
+  isPrimary: Boolean!
 }
 
 extend type Mutation{
@@ -14,7 +16,9 @@ extend type Mutation{
 }
 
 extend type Query{
-  getAddress: Address! @goField(forceResolver: true)@auth
+  address: Address! @goField(forceResolver: true)@auth
+  addresses(user:String!): [Address!]!
+  addressById(id:ID!): Address! @goField(forceResolver: true)
 }
 
 input NewAddress{
@@ -23,6 +27,8 @@ input NewAddress{
   phone: String!
   postalCode: Int!
   user: String!
+  title:String!
+  isPrimary: Boolean!
 }
 
 input UpdateAddress{
@@ -30,4 +36,6 @@ input UpdateAddress{
   city: String!
   phone: String!
   postalCode: Int!
+  title:String!
+  isPrimary: Boolean!
 }

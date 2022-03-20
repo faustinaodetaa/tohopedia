@@ -11,6 +11,8 @@ import Card from '../components/card';
 import React, { useState, useEffect, useMemo } from 'react';
 import {Pagination} from '../components/pagination'
 import axios from 'axios';
+import ImageSlider from '../components/slider';
+import { SliderData } from '../components/sliderData';
 const Home: NextPage = () => {
   
   const GET_ALL_PRODUCT = gql `
@@ -50,6 +52,33 @@ const Home: NextPage = () => {
 
   console.log(data)
 
+  const TOP_DISCOUNT_PRODUCT = gql`
+    query TopDiscountProduct{
+      topDiscountProduct{
+        id
+        name
+        discount
+        images{
+          image
+        }
+        shop{
+          name
+        }
+        price
+        discount
+        category{
+          name
+        }
+      }
+      
+    }
+  `
+
+  const {loading: l2, error: e2, data: d2} = useQuery(TOP_DISCOUNT_PRODUCT)
+
+
+
+
     const [page, setPage] = useState(1);
     const totalContent = 10;
     const count =data?.getAllProduct?.length
@@ -65,6 +94,8 @@ const Home: NextPage = () => {
     return getCookie('currUser') === undefined?(
       <>
       <Header></Header>
+      <ImageSlider slides={SliderData}></ImageSlider>
+
       <div className={styles.sideContainer}>
           <h2>Filter</h2>
         <div className={styles.productContainer}>
@@ -84,7 +115,7 @@ const Home: NextPage = () => {
               {data?.getAllProduct?.map((data:any)=>{
                 return(
                   <div className={styles.cardProductContainer}>
-                    <Card name={data?.name} price = {data?.price} category =  {data?.category?.name} image = {data.images[0] ? data?.images[0]?.image : '/image.png'} shop = {data?.shop?.name} id={data?.id}></Card>
+                    <Card name={data?.name} price = {data?.price} discount = {data?.price - (data?.discount / 100 * data?.price)}  category =  {data?.category?.name} image = {data.images[0] ? data?.images[0]?.image : '/image.png'} shop = {data?.shop?.name} id={data?.id}></Card>
                   </div>
                 )
               })}
@@ -109,6 +140,7 @@ const Home: NextPage = () => {
     ) : (
       <>
       <LoggedHeader></LoggedHeader>
+      <ImageSlider slides={SliderData}></ImageSlider>
       
       <div className={styles.sideContainer}>
           <h2>Filter</h2>
@@ -126,13 +158,31 @@ const Home: NextPage = () => {
               </ul>
             </div>
             <div className={styles.productCard}>
-              {data?.getAllProduct?.map((data:any)=>{
-                return(
-                  <div className={styles.cardProductContainer}>
-                    <Card name={data?.name} price = {data?.price} category =  {data?.category?.name} image = {data.images[0] ? data?.images[0]?.image : '/image.png'} shop = {data?.shop?.name} id={data?.id}></Card>
-                  </div>
-                )
-              })}
+              <br />
+              <div className={styles.productContainerContent}>
+                <h1>Top Discount Products</h1>
+                {d2?.topDiscountProduct?.map((d2:any)=>{
+                  return(
+                    <div className={styles.cardProductContainer}>
+                      <Card name={d2?.name} price = {d2?.price} discount = {d2?.price - (d2?.discount / 100 * d2?.price)} disc = {d2?.discount} category =  {d2?.category?.name} image = {d2?.images[0] ? d2?.images[0]?.image : '/image.png'} shop = {d2?.shop?.name} id={d2?.id}></Card>
+                    </div>
+                    
+                  )
+                })}
+
+              </div>
+              <br />
+              <div className={styles.productContainerContent}>
+                <h1>All Products</h1>
+                {data?.getAllProduct?.map((data:any)=>{
+                  return(
+                    <div className={styles.cardProductContainer}>
+                      <Card name={data?.name} price = {data?.price} discount = {data?.price - (data?.discount / 100 * data?.price)} disc={data?.discount} category =  {data?.category?.name} image = {data.images[0] ? data?.images[0]?.image : '/image.png'} shop = {data?.shop?.name} id={data?.id}></Card>
+                    </div>
+                  )
+                })}
+
+              </div>
 
             </div>
 

@@ -50,7 +50,7 @@ func (r *mutationResolver) CreateCart(ctx context.Context, input model.NewCart) 
 	return model, err
 }
 
-func (r *mutationResolver) UpdateCart(ctx context.Context, id string, input model.UpdateCart) (*model.Cart, error) {
+func (r *mutationResolver) AddQty(ctx context.Context, id string) (*model.Cart, error) {
 	db := config.GetDB()
 	model := new(model.Cart)
 
@@ -58,7 +58,23 @@ func (r *mutationResolver) UpdateCart(ctx context.Context, id string, input mode
 		return nil, err
 	}
 
-	model.Qty = input.Qty
+	model.Qty += 1
+
+	return model, db.Save(model).Error
+}
+
+func (r *mutationResolver) SubtractQty(ctx context.Context, id string) (*model.Cart, error) {
+	db := config.GetDB()
+	model := new(model.Cart)
+
+	if err := db.First(model, "id = ?", id).Error; err != nil {
+		return nil, err
+	}
+
+	model.Qty -= 1
+	if model.Qty == 0 {
+		return model, db.Delete(model, "id = ?", id).Error
+	}
 
 	return model, db.Save(model).Error
 }
@@ -88,3 +104,22 @@ func (r *queryResolver) GetCartByUser(ctx context.Context, user string) ([]*mode
 func (r *Resolver) Cart() generated.CartResolver { return &cartResolver{r} }
 
 type cartResolver struct{ *Resolver }
+
+// !!! WARNING !!!
+// The code below was going to be deleted when updating resolvers. It has been copied here so you have
+// one last chance to move it out of harms way if you want. There are two reasons this happens:
+//  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
+//    it when you're done.
+//  - You have helper methods in this file. Move them out to keep these resolver files clean.
+func (r *mutationResolver) UpdateCart(ctx context.Context, id string, input model.UpdateCart) (*model.Cart, error) {
+	db := config.GetDB()
+	model := new(model.Cart)
+
+	if err := db.First(model, "id = ?", id).Error; err != nil {
+		return nil, err
+	}
+
+	model.Qty = input.Qty
+
+	return model, db.Save(model).Error
+}

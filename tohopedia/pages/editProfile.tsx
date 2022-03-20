@@ -10,6 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup"
 import { getCookie } from 'cookies-next';
 import { FaBox, FaCog, FaComment, FaHome } from "react-icons/fa";
+import Router from 'next/router';
 
 
 const EditShop: NextPage = () => {
@@ -88,6 +89,8 @@ const EditShop: NextPage = () => {
     }
     if(data){
         console.log("updated")
+        Router.reload()
+
     }
     
     

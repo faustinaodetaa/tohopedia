@@ -11,12 +11,21 @@ type AuthOps struct {
 	Register interface{} `json:"register"`
 }
 
+type Courier struct {
+	ID            string `json:"id"`
+	Name          string `json:"name"`
+	Price         int    `json:"price"`
+	EstimatedTime int    `json:"estimatedTime"`
+}
+
 type NewAddress struct {
 	Location   string `json:"location"`
 	City       string `json:"city"`
 	Phone      string `json:"phone"`
 	PostalCode int    `json:"postalCode"`
 	User       string `json:"user"`
+	Title      string `json:"title"`
+	IsPrimary  bool   `json:"isPrimary"`
 }
 
 type NewCart struct {
@@ -27,6 +36,12 @@ type NewCart struct {
 
 type NewCategory struct {
 	Name string `json:"name"`
+}
+
+type NewCourier struct {
+	Name          string `json:"name"`
+	Price         int    `json:"price"`
+	EstimatedTime int    `json:"estimatedTime"`
 }
 
 type NewProduct struct {
@@ -45,6 +60,14 @@ type NewProductImage struct {
 	Product string `json:"product"`
 }
 
+type NewReview struct {
+	Score       int    `json:"score"`
+	Description string `json:"description"`
+	Image       string `json:"image"`
+	Anonymous   bool   `json:"anonymous"`
+	Product     string `json:"product"`
+}
+
 type NewShop struct {
 	Name     string `json:"name"`
 	NameSlug string `json:"nameSlug"`
@@ -53,18 +76,51 @@ type NewShop struct {
 	Phone    string `json:"phone"`
 }
 
+type NewTransaction struct {
+	User    string `json:"user"`
+	Address string `json:"address"`
+	Courier string `json:"courier"`
+}
+
+type NewTransactionDetail struct {
+	Transaction string `json:"transaction"`
+	Product     string `json:"product"`
+	Qty         int    `json:"qty"`
+}
+
 type NewUser struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
-	Username string `json:"username"`
 	Name     string `json:"name"`
-	Phone    string `json:"phone"`
-	Gender   string `json:"gender"`
-	Dob      string `json:"dob"`
+}
+
+type NewVoucher struct {
+	Name        string    `json:"name"`
+	Description string    `json:"description"`
+	Discount    float64   `json:"discount"`
+	Tnc         string    `json:"tnc"`
+	StartTime   time.Time `json:"startTime"`
+	EndTime     time.Time `json:"endTime"`
+	Shop        *string   `json:"shop"`
+	IsGlobal    bool      `json:"isGlobal"`
+}
+
+type NewWishlist struct {
+	Product string `json:"product"`
+	User    string `json:"user"`
 }
 
 type ProductFilter struct {
-	Name string `json:"name"`
+	Name         *string   `json:"name"`
+	Category     *string   `json:"category"`
+	MinPrice     *int      `json:"minPrice"`
+	MaxPrice     *int      `json:"maxPrice"`
+	Store        []*string `json:"store"`
+	Location     []*string `json:"location"`
+	Shipping     []*string `json:"shipping"`
+	Rating       []*int    `json:"rating"`
+	ShippingTime []*string `json:"shippingTime"`
+	ProductAdded []*int    `json:"productAdded"`
 }
 
 type UpdateAddress struct {
@@ -72,10 +128,35 @@ type UpdateAddress struct {
 	City       string `json:"city"`
 	Phone      string `json:"phone"`
 	PostalCode int    `json:"postalCode"`
+	Title      string `json:"title"`
+	IsPrimary  bool   `json:"isPrimary"`
+}
+
+type UpdateBalance struct {
+	Balance int `json:"balance"`
+}
+
+type UpdateBlockStatus struct {
+	IsBlocked bool `json:"isBlocked"`
 }
 
 type UpdateCart struct {
 	Qty int `json:"qty"`
+}
+
+type UpdateProduct struct {
+	Name        string  `json:"name"`
+	Images      *string `json:"images"`
+	Description string  `json:"description"`
+	Price       int     `json:"price"`
+	Discount    float64 `json:"discount"`
+	Stock       int     `json:"stock"`
+	Metadata    string  `json:"metadata"`
+	Category    string  `json:"category"`
+}
+
+type UpdateReviewStatus struct {
+	IsReviewed bool `json:"isReviewed"`
 }
 
 type UpdateShop struct {

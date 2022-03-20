@@ -16,5 +16,11 @@ func MigrateTable() {
 	db.AutoMigrate(&model.ProductImage{})
 	db.AutoMigrate(&model.Cart{})
 	db.AutoMigrate(&model.Address{})
+	db.AutoMigrate(&model.Review{})
+	db.AutoMigrate(&model.Courier{})
+	db.AutoMigrate(&model.Wishlist{})
+	db.AutoMigrate(&model.Voucher{})
+	db.AutoMigrate(&model.Transaction{})
+	db.AutoMigrate(&model.TransactionDetail{})
 
 }

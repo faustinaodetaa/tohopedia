@@ -3,13 +3,15 @@ import styles from '../../styles/productDetail.module.scss';
 import LoggedHeader from '../../components/loggedHeader';
 import Header from '../../components/header';
 import Footer from '../../components/footer';
-import React from 'react'
+import React, { useState } from 'react'
 import { getCookie } from 'cookies-next';
-import { FaBox, FaCog, FaComment, FaHeart, FaHome, FaPlus, FaShare, FaStore } from "react-icons/fa";
+import { FaBox, FaCog, FaComment, FaHeart, FaHome, FaMapMarkerAlt, FaMinus, FaPlus, FaShare, FaStore, FaTruck } from "react-icons/fa";
 import { gql, useMutation, useQuery } from '@apollo/client';
 import ProuctCard from '../../components/card';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
+import Router from "next/router";
+
 import { useForm } from 'react-hook-form';
 
 
@@ -19,6 +21,8 @@ const ProductDetail: NextPage = () => {
   const {query : {id},} = router
   const productId = router.asPath.split('/')[2]
   // console.log(router.asPath.split('/')[2])
+  const [qty, setQty] = useState(1)
+
   const GET_USER = gql`query GetCurrUser{
     getCurrentUser{
       id,
@@ -26,7 +30,6 @@ const ProductDetail: NextPage = () => {
     }
   }`
 
-const {loading: loa, error: er, data: da} = useQuery(GET_USER)
 // console.log(da?.getCurrentUser?.id)
 
   const ADD_CART = gql`
@@ -36,7 +39,12 @@ const {loading: loa, error: er, data: da} = useQuery(GET_USER)
     }
   }
   `
+
+
+  const {loading: loa, error: er, data: da} = useQuery(GET_USER)
   const [createCart,{loading: l, error: e, data: d}] = useMutation(ADD_CART)
+
+
 
   const{register, handleSubmit, formState:{errors}} = useForm()
   async function onSubmit(data:any){
@@ -73,15 +81,18 @@ const {loading: loa, error: er, data: da} = useQuery(GET_USER)
           name
         }
         shop{
+          id
+          user{
+            id
+          }
           name
+          profile
+          address
         }
+        soldCount
       }
     }
   `
-
-
-
-
 
     const {loading: load, error: err, data: dat} = useQuery(GET_PRODUCT_BY_ID,{
       variables: {
@@ -90,11 +101,101 @@ const {loading: loa, error: er, data: da} = useQuery(GET_USER)
     })
     // console.log(dat?.product?.name)
 
-    if(load){
+    const GET_ALL_REVIEW = gql`
+      query ReviewByProduct($product:String!){
+        review(productID:$product){
+          id
+          description
+        }
+      }
+    `
+
+    const {loading:l2, error:e2, data:d2} = useQuery(GET_ALL_REVIEW,{
+      variables:{
+        product: productId
+      }
+    })
+
+    const GET_COURIERS = gql`
+      query Couriers{
+        couriers{
+          name
+          price
+          estimatedTime
+        }
+      }
+    `
+
+    const {loading:l3, error:e3, data:d3} = useQuery(GET_COURIERS)
+    console.log(d3?.couriers[0]?.name)
+
+    const DELETE_PRODUCT_IMAGE = gql`
+      mutation DeleteProductImage($id:ID!){
+        deleteImage(id:$id){
+          id
+        }
+      }
+    `
+    const DELETE_PRODUCT = gql`
+      mutation DeleteProduct($id:ID!){
+        deleteProduct(id:$id){
+          name
+        }
+      }
+    `
+
+    const [delImage, {loading: l4, error: e4, data:d4}] = useMutation(DELETE_PRODUCT_IMAGE)
+    const [delProduct, {loading: l5, error: e5, data:d5}] = useMutation(DELETE_PRODUCT) 
+
+    const ADD_WISHLIST = gql`
+    mutation CreateWishlist($product:String!, $user:String!){
+      createWishlist(input:{product:$product, user:$user}){
+        id
+      }
+    }
+  `
+    const[createWishlist, {loading: l6, error: e6, data: d6}] = useMutation(ADD_WISHLIST)
+  async function addWishlist() {
+    try{
+      await createWishlist({
+        variables:{
+          product: productId,
+          user: da?.getCurrentUser?.id
+        }
+      })
+    }catch(error){
+      console.log(error)
+    }
+  }
+
+  if(d6){
+    console.log("added to wishlist")
+  }
+
+
+    async function deleteProduct(data:any) {
+      try{
+        await delImage({
+          variables:{
+            id:data
+          }
+        })
+      }catch(error){
+        console.log(error)
+      }
+    }
+    
+    if(d4){
+      delProduct({variables:{id:productId}})
+      console.log('product deleted')
+    }
+
+    if(load || l || l2 ||loa || l3 || l4 || l5){
       return(
         <div>loading</div>
       )
     }
+
     return getCookie('currUser') === undefined?(
       <>
       <Header></Header>
@@ -143,19 +244,89 @@ const {loading: loa, error: er, data: da} = useQuery(GET_USER)
       <LoggedHeader></LoggedHeader>
       <div className={styles.productContainer}>
         <div className={styles.imageContainer}>
-          <Image src={dat?.product?.images ? dat?.product?.images[0]?.image : '/image.png'} className={styles.img} alt="profile" width={200} height={200}/>
+          {dat?.product?.images?.length > 0 ? (
+            dat?.product?.images?.map((p: any)=>{return(
+              <Image src={p?.image} className={styles.img} alt="profile" width={200} height={200}/>
+
+            )})
+          ):
+          <div></div>
+          }
+
         </div>
         <div className={styles.productDetail}>
           <h1>{dat?.product?.name}</h1>
+          <p>Terjual {dat?.product?.soldCount}</p>
           <h3>Rp. {dat?.product?.price}</h3>
           <p>Description: <br></br> {dat?.product?.description}</p>
           <p>Category: {dat?.product?.category.name}</p>
-          <h5><FaStore></FaStore> {dat?.product?.shop.name}</h5>
+          <h5>{}</h5>
+          <hr />
+
+          <Image src={dat?.product?.shop.profile} className={styles.img} width={50} height={50}/>
+
+          <span><FaStore></FaStore>
+          <a href={`/shopDetail/${dat?.product?.shop?.id}`} key={dat?.product?.shop?.id}>{dat?.product?.shop.name}</a>
+          
+            
+          
+          </span>
+          <p>Pengiriman</p>
+          <p><FaMapMarkerAlt></FaMapMarkerAlt>Dikirim dari {dat?.product?.shop?.address} </p>
+          <p><FaTruck></FaTruck> Ongkir {d3?.couriers[0]?.name} {d3?.couriers[0]?.price}rb</p>
+          <div className={styles.dropdownTitle}>
+            <p className={styles.dropdownTitle}>Lihat lainnya</p>
+            <div className={styles.dropdownContent}>
+              {d3?.couriers?.length > 0 ? (d3?.couriers?.map((data:any)=>{
+                return(
+                  <div >
+                    <span >{data?.name}</span>
+                    <span> {data?.price}rb</span>
+                    <span> {data?.estimatedTime} hari</span>
+                    <button className={styles.button}>Pilih</button>
+                  </div>
+                )
+              })):
+              <div>
+                Tidak ada pilihan lain
+              </div>
+              }
+            </div>
+
+
+          </div>
+          <p>Estimasi tiba {d3?.couriers[0]?.estimatedTime} hari</p>
+          <hr />
+          <h2>Ulasan</h2>
+          <hr />
+          <h2>Diskusi</h2>
+          <hr />
+          {da?.getCurrentUser?.id == dat?.product?.shop?.user?.id ? 
+          <div>
+            <button className={styles.button}>
+              <a href={`/editProduct/${productId}`}>
+                Update Produk
+              </a>
+            </button>
+            <button className={styles.button} onClick={()=>deleteProduct(productId)}>Hapus Produk</button>
+          </div> 
+          : 
+          <div></div>}
         </div>
         <div className={styles.cartDetail}>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <input type="number" {...register("qty")} id="qty" placeholder='1'/>
+          <form>
+            <input type="text" {...register("qty")} id="qty" placeholder='1'value={qty}/>
+            <button>
+
+              <FaPlus></FaPlus>
+
+            </button>
+            <button>
+              <FaMinus></FaMinus>
+
+            </button>
           <p>Stock: {dat?.product?.stock}</p>
+          <input type="text" name="note" id="note" className={styles.notes} placeholder="note"/>
           <h4>Subtotal Rp {dat?.product?.price}</h4>
           <button className={styles.button} type='submit'> <FaPlus></FaPlus>Keranjang</button>
 
@@ -165,10 +336,14 @@ const {loading: loa, error: er, data: da} = useQuery(GET_USER)
           <button className={styles.buttonSecondary}>Beli Langsung</button>
           <div className={styles.icon}>
             <p className={styles.icons}>
-              <FaComment></FaComment> Chat
+              <a href="/chat">
+                <FaComment></FaComment> Chat
+              </a>
             </p>
             <p className={styles.icons}>
-              <FaHeart></FaHeart> Wishlist 
+              <button onClick={()=>addWishlist()}>
+                <FaHeart></FaHeart> Wishlist 
+              </button>
             </p>
             <p className={styles.icons}>
               <FaShare></FaShare> Share
@@ -176,6 +351,9 @@ const {loading: loa, error: er, data: da} = useQuery(GET_USER)
           </div>
 
         </div>
+        </div>
+        <div>
+
         </div>
       <Footer></Footer>
       </>

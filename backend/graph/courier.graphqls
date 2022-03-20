@@ -1,0 +1,20 @@
+type Courier{
+  id: ID!
+  name: String!
+  price: Int!
+  estimatedTime: Int!
+}
+
+extend type Query{
+  couriers: [Courier!]!
+}
+
+extend type Mutation{
+  createCourier(input:NewCourier!): Courier!
+}
+
+input NewCourier{
+  name: String!
+  price: Int!
+  estimatedTime: Int!
+}

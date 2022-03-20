@@ -18,6 +18,9 @@ type Product {
   createdAt: Time!
   category: Category! @goField(forceResolver: true)
   shop: Shop! @goField(forceResolver: true)
+  soldCount: Int!
+  review:Review! @goField(forceResolver: true)
+  isReviewed: Boolean!
 }
 
 type ProductImage {
@@ -32,19 +35,35 @@ extend type Query{
   product(id: ID!): Product! @goField(forceResolver: true)
   getAllCategory: [Category!]!
   getAllProduct: [Product!]!
-  productSearch(name:String!): [Product!]!
+  productSearch(input: ProductFilter, order: String!): [Product!]!
+  search(name: String!): [Product!]!
   getProductByShop(shopID: String!): [Product!]!
+  topDiscountProduct: [Product!]!
+  bestSellingProduct(shopID: String!): [Product!]!
+  productPagination(limit:Int!, offset:Int!, shop:String!):[Product!]! @goField(forceResolver:true)
 }
 
 extend type Mutation{
   createCategory(input: NewCategory!): Category!
   createProduct(input: NewProduct!): Product!
   createImage(input: NewProductImage!): ProductImage!
+  updateProduct(id: ID! input: UpdateProduct!):Product!
+  deleteProduct(id:ID!): Product!
+  deleteImage(id:ID!):ProductImage!
+  updateReviewStatus(id: ID! input: UpdateReviewStatus): Product!
 }
 
 input ProductFilter{
-  # id: ID!
-  name: String!
+  name: String
+  category: String
+  minPrice: Int
+  maxPrice: Int
+  store: [String]
+  location: [String]
+  shipping: [String]
+  rating: [Int]
+  shippingTime: [String]
+  productAdded: [Int]
 }
 
 input NewCategory{
@@ -65,4 +84,19 @@ input NewProduct{
 input NewProductImage{
   image: String!
   product: String!
+}
+
+input UpdateProduct{
+  name: String!
+  images: String
+  description: String!
+  price: Int!
+  discount: Float!
+  stock: Int!
+  metadata: String!
+  category: String!
+}
+
+input UpdateReviewStatus{
+  isReviewed: Boolean!
 }

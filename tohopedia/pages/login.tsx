@@ -63,12 +63,14 @@ const Login: NextPage = () => {
 
     return(
         <div className={styles.container}>
-            <header>
+            <header >
                 <Image src="/tohopedia_logo.png" alt="" width={200} height={50}/>
             </header>
             <div className={styles.formContainer}>
+            <div className={styles.header}>
+            <Image  src="/image.png" width={500} height={400} ></Image>
 
-            <Image src="/image.png" width={500} height={400} ></Image>
+            </div>
             <div className={styles.loginFormContainer}>
                 <div className={styles.title}>
                     <h1 className={styles.title}>Login</h1>

@@ -1,0 +1,39 @@
+type Transaction{
+  id: ID!
+  user: User! @goField(forceResolver:true)
+  date: Time!
+  address: Address! @goField(forceResolver:true)
+  courier: Courier! @goField(forceResolver:true)
+}
+
+type TransactionDetail{
+  transaction: Transaction! @goField(forceResolver:true)
+  product: Product! @goField(forceResolver:true)
+  qty: Int!
+}
+
+extend type Query{
+  userTransaction(user:String!):[Transaction!]!
+  userTransactionById(transaction:String!):Transaction!
+
+  userTransactionDetail(transaction:String!):[TransactionDetail!]!
+  transactions: [Transaction!]!
+  transactionDetails(transaction:String!, product:String!): [TransactionDetail!]!
+}
+
+extend type Mutation{
+  createTransaction(input: NewTransaction!):Transaction!
+  createTransactionDetail(input: NewTransactionDetail!):TransactionDetail!
+}
+
+input NewTransaction{
+  user:String!
+  address: String!
+  courier: String!
+}
+
+input NewTransactionDetail{
+  transaction: String!
+  product: String!
+  qty: Int!
+}

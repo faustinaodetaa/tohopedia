@@ -21,6 +21,8 @@ type User {
   gender: String!
   dob: Date!
   picture: String
+  balance: Int!
+  isBlocked: Boolean!
 }
 
 
@@ -37,17 +39,14 @@ type Mutation {
   createUser(input: NewUser!): User!
   updateUser(id: ID!, input: UpdateUser!): User!
   auth: AuthOps! @goField(forceResolver: true)
+  updateBalance(id:ID!, input: UpdateBalance!): User!
+  updateBlockStatus(id: ID!, input: UpdateBlockStatus!): User!
 }
 
 input NewUser{
   email: String!
   password: String!
-  username: String!
   name: String!
-  phone: String!
-  gender: String!
-  dob: Date!
-  # role: String!
 }
 
 input UpdateUser{
@@ -57,6 +56,14 @@ input UpdateUser{
   dob: Date!
   gender: String!
   phone: String!
+}
+
+input UpdateBalance{
+  balance: Int!
+}
+
+input UpdateBlockStatus{
+  isBlocked: Boolean!
 }
 
 

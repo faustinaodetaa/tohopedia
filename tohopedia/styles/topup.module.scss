@@ -1,0 +1,24 @@
+@font-face {
+  font-family: Poppins;
+  src: url(../public/Poppins-Medium.ttf);
+  font-weight: normal;
+}
+
+$darkgreen: #42B549;
+$lightgreen: #84CB66;
+$font: Poppins;
+
+.title{
+  font-family: $font;
+  text-align: center;
+}
+
+
+.button{
+  background-color: $lightgreen;
+  border: 0px;
+  border-radius: 5px;
+  color: white;
+  width: 30%;
+  font-family: $font
+}

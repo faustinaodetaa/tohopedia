@@ -17,6 +17,7 @@ $font: Poppins;
   list-style: none;
   display: flex;
   justify-content: space-evenly;
+  align-items: center;
 }
 
 .login{
@@ -34,7 +35,7 @@ $font: Poppins;
   border: 0px;
   border-radius: 5px;
   color: white;
-  width: 150%;
+  width: 100%;
   font-family: $font
 }
 
@@ -63,12 +64,16 @@ $font: Poppins;
 .searchContainer{
   display: flex;
   // width: 40%;
+  align-items: center;
+
 
 }
 .buttons{
   display: flex;
   width: 15%;
   height: 30px;
+  align-items: center;
+
 }
 
 .dropdownContent{
@@ -110,6 +115,8 @@ $font: Poppins;
 .profile{
   display: flex;
   // border-radius: 15%;
+  align-items: center;
+
 }
 
 .img{
@@ -146,6 +153,11 @@ $font: Poppins;
 
 .profileMenu{
   display: flex;
+}
+
+.button{
+  border: none;
+  
 }
 
 @media screen and (max-width: 400px){
@@ -242,4 +254,9 @@ $font: Poppins;
 }
   
 
+}
+
+
+@media screen and (min-width:400px) and (max-width:820px){
+  
 }

@@ -28,6 +28,14 @@ $font: Poppins;
   
 }
 
+.strike{
+  text-decoration: line-through red;
+}
+
+.discount{
+  color: red;
+}
+
 @media screen and (max-width:400px){
   .container{
     padding: 30px 5px;

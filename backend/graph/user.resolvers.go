@@ -48,6 +48,32 @@ func (r *mutationResolver) Auth(ctx context.Context) (*model.AuthOps, error) {
 	return &model.AuthOps{}, nil
 }
 
+func (r *mutationResolver) UpdateBalance(ctx context.Context, id string, input model.UpdateBalance) (*model.User, error) {
+	db := config.GetDB()
+	model := new(model.User)
+
+	if err := db.First(model, "id = ?", id).Error; err != nil {
+		return nil, err
+	}
+
+	model.Balance += input.Balance
+
+	return model, db.Save(model).Error
+}
+
+func (r *mutationResolver) UpdateBlockStatus(ctx context.Context, id string, input model.UpdateBlockStatus) (*model.User, error) {
+	db := config.GetDB()
+	model := new(model.User)
+
+	if err := db.First(model, "id = ?", id).Error; err != nil {
+		return nil, err
+	}
+
+	model.IsBlocked = input.IsBlocked
+
+	return model, db.Save(model).Error
+}
+
 func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error) {
 	return service.UserGetByID(ctx, id)
 }
@@ -59,7 +85,11 @@ func (r *queryResolver) Protected(ctx context.Context) (string, error) {
 func (r *queryResolver) Users(ctx context.Context) ([]*model.User, error) {
 	// var models []*model.User
 	// return models, r.DB.Find(&models).Error
-	return service.Users(ctx)
+	db := config.GetDB()
+
+	var models []*model.User
+	return models, db.Find(&models).Error
+	// return service.Users(ctx)
 }
 
 func (r *queryResolver) GetCurrentUser(ctx context.Context) (*model.User, error) {
@@ -86,3 +116,10 @@ func (r *Resolver) Query() generated.QueryResolver { return &queryResolver{r} }
 type authOpsResolver struct{ *Resolver }
 type mutationResolver struct{ *Resolver }
 type queryResolver struct{ *Resolver }
+
+// !!! WARNING !!!
+// The code below was going to be deleted when updating resolvers. It has been copied here so you have
+// one last chance to move it out of harms way if you want. There are two reasons this happens:
+//  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
+//    it when you're done.
+//  - You have helper methods in this file. Move them out to keep these resolver files clean.

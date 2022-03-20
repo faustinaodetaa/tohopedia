@@ -9,6 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 import * as yup from "yup"
 import { getCookie } from 'cookies-next';
+import Router from 'next/router';
 
 
 const AddShop: NextPage = () => {
@@ -68,6 +69,7 @@ const AddShop: NextPage = () => {
     }
     if(data){
         console.log("created")
+        Router.reload()
     }
 console.log(getCookie('currUser'))
   return(

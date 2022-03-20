@@ -22,7 +22,8 @@ extend type Mutation{
 }
 extend type Query{
   getShop: Shop! @goField(forceResolver: true)@auth
-
+  shopById(id:ID!): Shop! @goField(forceResolver: true)
+  shops: [Shop!]!
 }
 
 input NewShop{

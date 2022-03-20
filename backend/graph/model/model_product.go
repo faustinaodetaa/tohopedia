@@ -24,6 +24,8 @@ type Product struct {
 	Category    *Category       `json:"category"`
 	ShopID      string          `json:"shopID" gorm:"size:191"`
 	Shop        *Shop           `json:"shop"`
+	SoldCount   int             `json:"soldCount"`
+	IsReviewed  bool            `json:"isReviewed"`
 }
 
 type ProductImage struct {

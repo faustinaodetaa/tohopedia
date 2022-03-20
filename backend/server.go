@@ -51,20 +51,7 @@ func main() {
 	router.Use(middlewares.AuthMiddleware)
 	c := generated.Config{Resolvers: &graph.Resolver{}}
 	c.Directives.Auth = directives.Auth
-	// dsn := "root:@tcp(127.0.0.1:3306)/tohopedia?charset=utf8mb4&parseTime=True&loc=Local"
-	// db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
-	// if err != nil {
-	// 	panic(err)
-	// }
-
-	// db.AutoMigrate(&model.User{})
-
-	// srv := handler.NewDefaultServer(
-	// 	generated.NewExecutableSchema(
-	// 		c,
-	// 	),
-	// )
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(c))
 	srv.AddTransport(&transport.Websocket{
 		Upgrader: websocket.Upgrader{
@@ -76,13 +63,6 @@ func main() {
 			WriteBufferSize: 1024,
 		},
 	})
-	// srv := handler.NewDefaultServer(
-	// 	generated.NewExecutableSchema(
-	// 		generated.Config{
-	// 			Resolvers: &graph.Resolver{},
-	// 		},
-	// 	),
-	// )
 
 	router.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	router.Handle("/query", srv)

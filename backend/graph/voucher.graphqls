@@ -1,0 +1,34 @@
+type Voucher{
+  id: ID!
+  name: String!
+  description: String!
+  discount: Float!
+  tnc: String!
+  startTime: Time!
+  endTime: Time!
+  shop: Shop! @goField(forceResolver: true)
+  isGlobal: Boolean!
+}
+
+extend type Mutation{
+  createVoucher(input: NewVoucher!): Voucher!
+}
+
+extend type Query{
+  vouchers(shop:String!): [Voucher!]!
+  globalVoucher: [Voucher!]!
+  allVoucher: [Voucher!]!
+
+}
+
+input NewVoucher{
+  name: String!
+  description: String!
+  discount: Float!
+  tnc: String!
+  startTime: Time!
+  endTime: Time!
+  shop: String
+  isGlobal: Boolean!
+}
+

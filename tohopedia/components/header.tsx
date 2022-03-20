@@ -10,7 +10,10 @@ const Header: NextPage = () => {
             <header>
               <li className={styles.list}>
                 <ul>
-                  <Image src="/tohopedia_logo.png" className={styles.logo} alt="" width={200} height={50}/>
+                  <a href="/home">
+                    <Image src="/tohopedia_logo.png" className={styles.logo} alt="" width={200} height={50}/>
+                    
+                  </a>
                 </ul>
                 <div className={styles.searchRes}>
                   <ul>
@@ -18,12 +21,16 @@ const Header: NextPage = () => {
                   </ul>
                   <ul className={styles.searchContainer}>
                     <input type="text" name="search" id="" className={styles.searchBar} placeholder='Search Product'/>
+                  <button className={styles.button} type="submit"><FaSearch></FaSearch></button>
                   </ul>
-                    <h2><FaSearch></FaSearch></h2>
+
                   
                 </div>
                 <div className={styles.dropdownTitle}>
+                  <a href="/login">
                     <h2 ><FaShoppingCart></FaShoppingCart></h2>
+                    
+                  </a>
                     
                     <div className={styles.dropdownContentContainer}>No Items in Cart</div>
                     

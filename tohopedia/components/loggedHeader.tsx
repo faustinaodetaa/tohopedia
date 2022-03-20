@@ -8,50 +8,59 @@ import { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
-
+import { useNavigate } from "react-router-dom";
+import { removeCookies } from 'cookies-next';
+// import Link from 'next/link';
 
 const Header: NextPage = () => {
 
   const router = useRouter()
   const { pid } = router.query
 
-  const [word, setWord] = useState('')
-
-  const SEARCH_PRODUCT = gql`query ProductByName($name:String!){
-    productSearch(name:$name){
-      name
-      description
-    }
-  }`
     const { register, handleSubmit, formState:{errors} } = useForm()
 
-  
-    
-    const {loading: lo, data: da} = useQuery(SEARCH_PRODUCT, {
-      variables: {
-        name: word
-      }
-    })
+    // var navigate = useNavigate()
     const searchBtn = (d:any) => {
       // console.log(d.name)
-      setWord(d.name)
+      // setName(d.name)
+      // navigate("/search/", d.name)
     }
 
-  if(da != null){
-    var productList = da?.productSearch
-  }
-
-
-
+  // if(da != null){
+  //   var productList = da?.productSearch
+  // }
   const GET_USER = gql`query GetCurrUser{
     getCurrentUser{
       id,
       name,
-      picture
+      picture,
+      balance
     }
   }`
   
   const {loading: l, error: e, data: d} = useQuery(GET_USER)
+  
+  const GET_ADDRESS = gql`
+    query Addresses($user:String!){
+      addresses(user:$user){
+        id
+        location
+        city
+        phone
+        postalCode
+        title
+        
+      }
+    }
+  `
+
+  const{loading: l3, error: err3, data: d3} = useQuery(GET_ADDRESS,{
+    variables:{
+      user: d?.getCurrentUser?.id
+    }
+  })
+    console.log(d3?.addresses[0]?.title)
+
 
   const GET_SHOP = gql`query GetCurrentShop{
     getShop{
@@ -88,7 +97,7 @@ const{loading: load, error: err2, data: d2} = useQuery(GET_CART_BY_USER,{
 console.log(d?.getCurrentUser?.id)
 console.log(d2?.getCartByUser[0]?.qty)
 
-   if(loading || l || load){
+   if(loading || l || load || l3){
      return(
        <div>loading</div>
      )
@@ -156,7 +165,10 @@ console.log(d2?.getCartByUser[0]?.qty)
                       </div>
                     </div>
                     <div className={styles.dropdownTitle}>
+                      <a href="/chat">
                       <h2><FaEnvelope></FaEnvelope></h2>
+
+                      </a>
                       <div className={styles.dropdownContentContainer}>
                         No Messages Yet!
                       </div>
@@ -192,13 +204,29 @@ console.log(d2?.getCartByUser[0]?.qty)
                         <div className={styles.dropdownProfile}>
                           <a href="/editProfile">Edit Profile</a>  
                           <br />
-                          <a href="/login">Logout</a>
+                          <a href="/wishlist">Wishlist</a>  
+                          <br />
+                          <a href="/topup">Balance: IDR {d?.getCurrentUser?.balance} Top Up Balance</a>  
+                          <br />
+                          <a href="/redeemVoucher">Redeem Voucher</a>  
+                          <br />
+                          <a href="/transaction">Transaction History</a>  
+
+
+                          <br />
+                          <button className={styles.button} onClick={()=>removeCookies("currUser")}>
+                            <a href="/login">Logout</a>
+                            
+                          </button>
                         </div>
                       </div>
                     </div>
                   </ul>
                   <ul>
-                    <p><FaMapMarkerAlt></FaMapMarkerAlt> Alam Sutera</p>
+                    <a href="/addresses">
+                      <p><FaMapMarkerAlt></FaMapMarkerAlt> {d3?.addresses[0]?.title}</p>
+                      
+                    </a>
                     
                   </ul>
                 </div>

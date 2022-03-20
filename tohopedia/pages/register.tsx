@@ -11,16 +11,16 @@ import * as yup from "yup"
 const Register: NextPage = () => {
 
     const REGISTER_USER = gql`
-        mutation Register($email:String!, $password:String!, $username: String!, $name: String!, $phone: String!, $gender:String!, $dob:Date!){
+        mutation Register($email:String!, $name: String!, $password:String!){
         auth{
             register(input:{
             email:$email,
             password:$password,
-            username:$username,
-            name:$name,
-            phone:$phone,
-            gender:$gender,
-            dob:$dob
+            # username:$username,
+            name:$name
+            # phone:$phone,
+            # gender:$gender,
+            # dob:$dob
             })
         }
         }
@@ -30,42 +30,57 @@ const Register: NextPage = () => {
     const schema = yup.object().shape({
         email: yup.string().required(),
         password: yup.string().required(),
-        username: yup.string().required(),
+        // username: yup.string().required(),
         name: yup.string().required(),
-        phone: yup.string().required(),
-        dob: yup.string().required()
+        // phone: yup.string().required(),
+        // dob: yup.string().required()
     }).required()
     
 
     const { register, handleSubmit, formState:{errors} } = useForm({
         resolver: yupResolver(schema)
     })
-    if(loading){
-        return(
-            <div>Loading</div>
-        )
-    }
+
+ 
+
+    // async function firstSubmit(d:any) {
+    //     console.log(d.email)
+
+    //     const {Auth} = require('two-step-auth');
+    //     const res = await Auth(d.email, "Tohopedia FA")
+    //     // console.log(res);
+    //     // console.log(res.mail);
+    //     console.log(res.OTP);
+    //     // console.log(res.success);
+    // }
 
     async function onSubmit(data:any){
         // alert('hi')
         console.log(data.email)
         console.log(data.password)
-        console.log(data.username)
-        console.log(data.name)
-        console.log(data.phone)
-        console.log(data.gender)
-        console.log(data.dob)
+        // console.log(data.username)
+        // console.log(data.name)
+        // console.log(data.phone)
+        // console.log(data.gender)
+        // console.log(data.dob)
 
+        
+
+        // const handleOTP = (e:any) => {
+        //     let input = e.target
+        // }
+
+        
         try {
             await reg({
                 variables:{
                     email: data.email,
                     password: data.password,
-                    username: data.username,
+                    // username: data.username,
                     name: data.name,
-                    phone: data.phone,
-                    gender: data.gender,
-                    dob: data.dob 
+                    // phone: data.phone,
+                    // gender: data.gender,
+                    // dob: data.dob 
                 }
             })
             
@@ -76,12 +91,17 @@ const Register: NextPage = () => {
         
     }
 
+
     if(data){
         // Router.push('/home')
         console.log('registered')
     }
 
-    
+    if(loading){
+        return(
+            <div>Loading</div>
+        )
+    }
 
     return(
         <div className={styles.container}>
@@ -114,18 +134,7 @@ const Register: NextPage = () => {
                                 Example: email@tohopedia.com
                             </label>
                         </div>
-                        <div className={styles.input}>
-                            <label htmlFor="password">Password</label>
-                            <br />
-                            <input type="password" {...register("password")} id="password" />
-                            <p className={styles.error}>{errors.password?.message}</p>
-                        </div>
-                        <div className={styles.input}>
-                            <label htmlFor="username">Username</label>
-                            <br />
-                            <input type="text" {...register("username")} id="username" />
-                            <p className={styles.error}>{errors.username?.message}</p>
-                        </div>
+                        
                         <div className={styles.input}>
                             <label htmlFor="name">Name</label>
                             <br />
@@ -133,29 +142,12 @@ const Register: NextPage = () => {
                             <p className={styles.error}>{errors.name?.message}</p>
                         </div>
                         <div className={styles.input}>
-                            <label htmlFor="phone">Phone</label>
+                            <label htmlFor="name">Password</label>
                             <br />
-                            <input type="text" {...register("phone")} id="phone" />
-                            <p className={styles.error}>{errors.phone?.message}</p>
+                            <input type="password" {...register("password")} id="password" />
+                            <p className={styles.error}>{errors.name?.message}</p>
                         </div>
-                        <div className={styles.input}>
-                            
-                            <label htmlFor="gender">Gender</label>
-                            <br />
-                            <input type="radio"  {...register("gender")} name="genderrb" value="female" id="female"  />
-                            <label htmlFor="female">Female</label>
-                            <input type="radio" {...register("gender")} name="genderrb" value="male" id="male" />
-                            <label htmlFor="male">Male</label>
-                            <p className={styles.error}>{errors.gender?.message}</p>
-                        </div>
-                        <div className={styles.input}>
-                            <label htmlFor="dob">DOB</label>
-                            <br />
-                            <input type="date" {...register("dob")} id="dob" />
-                            <p className={styles.error}>{errors.dob?.message}</p>
-
-                        </div>
-                        <br />
+                        
                         
                         <div className={styles.submitContainer}>
                             <button type='submit' className={styles.submit}>

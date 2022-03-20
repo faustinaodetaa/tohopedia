@@ -11,25 +11,28 @@ $font: Poppins;
 
 .productContainer{
   font-family: $font;
-  border: rgba(128, 128, 128, 0.288) 1px solid;
-  border-radius: 10px;
   padding: 0 50px;
+  display: flex;
 }
 
 .cartContainer{
   padding: 0 150px;
+  display: flex;
+  justify-content: space-around;
 
 }
 
 .qtyContainer{
   display: flex;
   align-items: center;
-  justify-content: end;
+  // justify-content: end;
   
 }
 
 .productContent{
   display: flex;
+  // justify-content: center;
+  // flex-wrap: wrap
 }
 
 .img{
@@ -43,4 +46,92 @@ $font: Poppins;
 
 .notesText{
   color: $darkgreen;
+}
+
+.button{
+  background-color: $lightgreen;
+  border: 0px;
+  border-radius: 5px;
+  color: white;
+  width: 30%;
+  font-family: $font
+}
+
+// .cartProductContainer{
+//   display: flex;
+// }
+
+.productContentContainer{
+  border: rgba(128, 128, 128, 0.288) 1px solid;
+  border-radius: 10px;
+  // width: 270%;
+  padding: 0 60px;
+}
+
+.checkout{
+  border: rgba(128, 128, 128, 0.288) 1px solid;
+  border-radius: 10px;
+  height: 150%;
+  padding: 50px 20px;
+  margin-top: 70px;
+  // width: 30%;
+}
+
+.container{
+  border: rgba(128, 128, 128, 0.288) 1px solid;
+  border-radius: 10px;
+  padding: 10px 20px;
+  margin-top: 50px;
+  width: 100%;
+
+}
+
+.promoContent{
+  display: none;
+  border: rgba(128, 128, 128, 0.288) 1px solid;
+  border-radius: 10px;
+}
+
+.promo:hover .promoContent{
+  display: block;
+}
+.strike{
+  text-decoration: line-through red;
+}
+
+
+
+
+@media screen and (max-width:400px){
+  .checkout{
+    width: 220px;
+    // display: none;
+    margin-left: -100px;
+
+  }
+
+  .button{
+    width: auto;
+  }
+
+  .cartContainer{
+    flex-direction: column;
+  }
+
+  .productContentContainer{
+    width: auto;
+    // padding: 0px;
+    justify-content: center;
+    margin-left: -100px;
+
+  }
+  .productContainer{
+    padding: 0px;
+  }
+
+  .container{
+    width: 200px;
+    margin-left: -100px;
+
+  }
 }

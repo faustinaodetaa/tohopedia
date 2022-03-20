@@ -43,6 +43,24 @@ $font: Poppins;
   gap: 10px;
 }
 
+.dropdownContent{
+  display: none;
+}
+
+.dropdownTitle:hover{
+  cursor: pointer;
+}
+
+.dropdownTitle:hover .dropdownContent{
+  display: block;
+}
+
+.notes{
+  border: none;
+  border-bottom: $darkgreen 1px solid;
+}
+
+
 @media screen and (max-width:400px){
   .img{
     border-radius: 10px;

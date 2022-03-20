@@ -89,6 +89,20 @@ func (r *queryResolver) GetShop(ctx context.Context) (*model.Shop, error) {
 	return &shop, nil
 }
 
+func (r *queryResolver) ShopByID(ctx context.Context, id string) (*model.Shop, error) {
+	db := config.GetDB()
+
+	model := new(model.Shop)
+	return model, db.First(model, "id = ?", id).Error
+}
+
+func (r *queryResolver) Shops(ctx context.Context) ([]*model.Shop, error) {
+	db := config.GetDB()
+
+	var models []*model.Shop
+	return models, db.Find(&models).Error
+}
+
 func (r *shopResolver) User(ctx context.Context, obj *model.Shop) (*model.User, error) {
 	db := config.GetDB()
 	var user *model.User

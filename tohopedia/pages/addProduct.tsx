@@ -9,6 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { FaBox, FaCog, FaComment, FaHome } from "react-icons/fa";
 
 import * as yup from "yup"
+import Router from 'next/router';
 
 let images: any[] = [] 
 let flag= false
@@ -123,6 +124,8 @@ const AddProduct: NextPage = () => {
     }
     if(data){
         console.log("added product")
+        Router.reload()
+
     }
 
     if (!flag && data && images) {

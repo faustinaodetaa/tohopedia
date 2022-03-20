@@ -7,7 +7,9 @@ type Cart{
 
 extend type Mutation{
   createCart(input: NewCart!): Cart!
-  updateCart(id: ID! input: UpdateCart!): Cart!
+  addQty(id: ID!): Cart!
+  subtractQty(id: ID!): Cart!
+
   deleteCart(id: ID!): Cart!
 }
 

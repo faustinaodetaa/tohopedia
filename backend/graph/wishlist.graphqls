@@ -1,0 +1,20 @@
+type Wishlist{
+  id: ID!
+  product: Product! @goField(forceResolver: true)
+  user: User! @goField(forceResolver: true)
+}
+
+extend type Mutation{
+  createWishlist(input: NewWishlist!): Wishlist!
+  deleteWishlist(id: ID!): Wishlist!
+}
+
+extend type Query{
+  wishlists(user:String!): [Wishlist!]!
+
+}
+
+input NewWishlist{
+  product: String!
+  user: String!
+}
