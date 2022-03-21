@@ -13,19 +13,18 @@ $font: Poppins;
   text-align: center;
 }
 
+.reviewContainer{
+  border: rgba(128, 128, 128, 0.336) 1px solid;
+  border-radius: 10px;
+  padding: 10px 80px;
+  margin: 30px;
+  text-align: center;
+}
 
 .button{
-  background-color: $lightgreen;
+  background-color: $darkgreen;
   border: 0px;
   border-radius: 5px;
   color: white;
   font-family: $font
-}
-
-.topupContainer{
-  border: 1px grey solid;
-  border-radius: 5px;
-  margin: 10px;
-  padding: 10px;
-  text-align: center;
 }

@@ -1,0 +1,23 @@
+@font-face {
+  font-family: Poppins;
+  src: url(../public/Poppins-Medium.ttf);
+  font-weight: normal;
+}
+
+$darkgreen: #42B549;
+$lightgreen: #84CB66;
+$font: Poppins;
+
+.title{
+  font-family: $font;
+  text-align: center;
+}
+
+.container{
+  font-family: $font;
+
+}
+
+.visualizationContainer{
+  padding: 30px;
+}

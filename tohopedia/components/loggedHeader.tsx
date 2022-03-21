@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { gql, useQuery } from '@apollo/client';
 import { FaBell, FaEnvelope, FaMapMarkerAlt, FaSearch, FaShoppingCart } from "react-icons/fa";
 import Link from 'next/link';
-import { useRouter } from 'next/router';
+import Router, { useRouter } from 'next/router';
 import { useRef, useState } from 'react';
 import React from 'react';
 import { useForm } from 'react-hook-form';
@@ -21,7 +21,8 @@ const Header: NextPage = () => {
 
     // var navigate = useNavigate()
     const searchBtn = (d:any) => {
-      // console.log(d.name)
+      console.log(d.name)
+      Router.push(`/search/${d.name}`)
       // setName(d.name)
       // navigate("/search/", d.name)
     }
@@ -97,7 +98,17 @@ const{loading: load, error: err2, data: d2} = useQuery(GET_CART_BY_USER,{
 console.log(d?.getCurrentUser?.id)
 console.log(d2?.getCartByUser[0]?.qty)
 
-   if(loading || l || load || l3){
+const GET_ALL_CATEGORY = gql`
+    query GetAllCategory{
+    getAllCategory{
+      name
+    }
+  }
+  `
+
+  const {loading: l4, error: e4, data: d4} = useQuery(GET_ALL_CATEGORY)
+
+   if(loading || l || load || l3 || l4){
      return(
        <div>loading</div>
      )
@@ -115,20 +126,30 @@ console.log(d2?.getCartByUser[0]?.qty)
                     </a>
                   </ul>
                   <ul>
-                    <p className={styles.category}>Category</p>
+                    <div className={styles.categoryContainer}>
+                      <p className={styles.category}>Category</p>
+                      <div className={styles.categoryContent}>
+                        {d4?.getAllCategory?.length > 0 ? (
+                          d4?.getAllCategory?.map((cat:any) => {return(
+                            <li>
+                              <div className={styles.category}>{cat?.name}</div>
+                            </li>
+
+                          )})
+                        ):  null}
+
+                    </div>
+
+                    </div>
                   </ul>
                   <ul className={styles.searchContainer}>
                     <div className={styles.searchFormContainer}>
 
                       <form onSubmit={handleSubmit(searchBtn)}>
-
                         <div className={styles.input}>
-
                         <input type="text" id="name" className={styles.searchBar} placeholder=' Cari Baju' {...register("name")}/>
                         <button className={styles.button} type="submit"><FaSearch></FaSearch></button>
-                        </div>
-                        
-                        
+                        </div>                       
                       </form>
 
                     </div>
@@ -136,7 +157,29 @@ console.log(d2?.getCartByUser[0]?.qty)
                   
                 </div>
                   {/* <h2></h2> */}
-                  <div className={styles.icons}>
+
+                  {d?.getCurrentUser?.name === "Admin" ? (
+                    <div>
+                      <button>
+                      <a href="/userManagement">User Management</a>
+
+                      </button>
+                      <button>
+                      <a href="/dashboard">Dashboard</a>
+
+                      </button>
+                      <button>
+                      <a href="/addVoucherAdmin">Add Global Voucher</a>
+
+                      </button>
+                      <button className={styles.button} onClick={()=>removeCookies("currUser")}>
+                            <a href="/login">Logout</a>
+                            
+                          </button>
+                    </div>
+                  ) : (
+                   <>
+                   <div className={styles.icons}>
                     
                     <div className={styles.dropdownTitle}>
                       <h2 >
@@ -208,7 +251,7 @@ console.log(d2?.getCartByUser[0]?.qty)
                           <br />
                           <a href="/topup">Balance: IDR {d?.getCurrentUser?.balance} Top Up Balance</a>  
                           <br />
-                          <a href="/redeemVoucher">Redeem Voucher</a>  
+                          <a href="/reksadana">Reksadana</a>  
                           <br />
                           <a href="/transaction">Transaction History</a>  
 
@@ -231,6 +274,8 @@ console.log(d2?.getCartByUser[0]?.qty)
                   </ul>
                 </div>
                 </div>
+                   </>
+                  )}
 
               </li>
             </header>

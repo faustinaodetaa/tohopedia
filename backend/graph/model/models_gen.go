@@ -80,6 +80,7 @@ type NewTransaction struct {
 	User    string `json:"user"`
 	Address string `json:"address"`
 	Courier string `json:"courier"`
+	Voucher string `json:"voucher"`
 }
 
 type NewTransactionDetail struct {
@@ -123,6 +124,11 @@ type ProductFilter struct {
 	ProductAdded []*int    `json:"productAdded"`
 }
 
+type RedeemVoucher struct {
+	User    string `json:"user"`
+	Voucher string `json:"voucher"`
+}
+
 type UpdateAddress struct {
 	Location   string `json:"location"`
 	City       string `json:"city"`
@@ -153,10 +159,6 @@ type UpdateProduct struct {
 	Stock       int     `json:"stock"`
 	Metadata    string  `json:"metadata"`
 	Category    string  `json:"category"`
-}
-
-type UpdateReviewStatus struct {
-	IsReviewed bool `json:"isReviewed"`
 }
 
 type UpdateShop struct {

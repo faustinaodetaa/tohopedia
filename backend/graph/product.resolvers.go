@@ -128,7 +128,7 @@ func (r *mutationResolver) DeleteImage(ctx context.Context, id string) (*model.P
 	return model, db.Delete(model, "product_id = ?", id).Error
 }
 
-func (r *mutationResolver) UpdateReviewStatus(ctx context.Context, id string, input *model.UpdateReviewStatus) (*model.Product, error) {
+func (r *mutationResolver) UpdateReviewStatus(ctx context.Context, id string) (*model.Product, error) {
 	db := config.GetDB()
 	model := new(model.Product)
 
@@ -259,6 +259,13 @@ func (r *queryResolver) GetProductByShop(ctx context.Context, shopID string) ([]
 	return models, db.Where("shop_id = ?", shopID).Find(&models).Error
 }
 
+func (r *queryResolver) GetThreeProductByShop(ctx context.Context, shopID string) ([]*model.Product, error) {
+	db := config.GetDB()
+
+	var models []*model.Product
+	return models, db.Where("shop_id = ?", shopID).Limit(3).Find(&models).Error
+}
+
 func (r *queryResolver) TopDiscountProduct(ctx context.Context) ([]*model.Product, error) {
 	db := config.GetDB()
 
@@ -271,6 +278,13 @@ func (r *queryResolver) BestSellingProduct(ctx context.Context, shopID string) (
 
 	var models []*model.Product
 	return models, db.Where("shop_id = ?", shopID).Limit(10).Order("sold_count desc").Find(&models).Error
+}
+
+func (r *queryResolver) ProductRecommendation(ctx context.Context) ([]*model.Product, error) {
+	db := config.GetDB()
+
+	var models []*model.Product
+	return models, db.Limit(15).Order("sold_count desc").Find(&models).Error
 }
 
 func (r *queryResolver) ProductPagination(ctx context.Context, limit int, offset int, shop string) ([]*model.Product, error) {

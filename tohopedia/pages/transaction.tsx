@@ -67,7 +67,7 @@ const Transaction: NextPage = () =>{
 
   const{loading: l3, error:e3, data:d3} = useQuery(GET_TRANSACTION_DETAIL,{
     variables:{
-      transaction: d2?.userTransaction[0]?.id
+      transaction: d2?.userTransaction[1]?.id
       
       // d2?.userTransaction?.length > 0 ?(
       //   d2?.userTransaction?.map((d:any)=>{d.id})

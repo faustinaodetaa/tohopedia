@@ -124,8 +124,8 @@ const Shop: NextPage = () => {
 
                   <Card id={data?.id} name={data?.name} price = {data?.price} discount = {data?.price - (data?.discount / 100 * data?.price)} disc = {data?.discount} category =  {data?.category?.name} image = {data.images[0] ? data?.images[0]?.image : '/image.png'} shop = {data?.shop?.name}>
                   </Card>
-                  <button className={styles.button}>Update</button>
-                  <button className={styles.button}>Delete</button>
+                  {/* <button className={styles.button}>Update</button>
+                  <button className={styles.button}>Delete</button> */}
 
 
                 </div>

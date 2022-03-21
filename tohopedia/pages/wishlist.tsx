@@ -114,7 +114,7 @@ const Wishlist: NextPage = () => {
       <>
       <LoggedHeader></LoggedHeader>
           <div className={styles.cartContainer}>
-            <div className={styles.cartProductContainer}>
+            <div className={styles.productContainerContent}>
               <h2>Wishlist</h2>
               {data?.wishlists?.length > 0 ? (data?.wishlists?.map((data:any)=>{
                 return(

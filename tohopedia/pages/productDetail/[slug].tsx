@@ -190,7 +190,30 @@ const ProductDetail: NextPage = () => {
       console.log('product deleted')
     }
 
-    if(load || l || l2 ||loa || l3 || l4 || l5){
+
+  const GET_VOUCHER = gql `
+    query Vouchers($shop:String!){
+      vouchers(shop:$shop){
+        id
+        name
+        description
+        discount
+        tnc
+        startTime
+        endTime
+        isGlobal
+      }
+    }
+  `
+  const{loading:l7, error:e7, data:d7} = useQuery(GET_VOUCHER,{
+    variables: {
+    shop: dat?.product?.shop?.id
+
+  }
+  })
+  console.log(d7?.vouchers[0]?.name)
+
+    if(load || l || l2 ||loa || l3 || l4 || l5 || l6 || l7){
       return(
         <div>loading</div>
       )
@@ -297,6 +320,24 @@ const ProductDetail: NextPage = () => {
           </div>
           <p>Estimasi tiba {d3?.couriers[0]?.estimatedTime} hari</p>
           <hr />
+          <h2>Voucher Toko</h2>
+          {d7?.vouchers?.length > 0 ?(
+            d7?.vouchers?.map((data:any)=>{
+              return(
+                <div className={styles.voucherContainer}>
+                  <p>{data?.name}</p>
+                  <p>{data?.description}</p>
+                  <p>Discount: {data?.discount}%</p>
+                  <button className={styles.button}>
+                    <a href={`/redeemVoucher/${data?.id}`} key={data?.id}>
+                      Redeem Voucher
+                    </a>
+                  </button>
+                </div>
+              )
+            })
+          ) : <p>No Vouchers Available</p>}
+          <hr />
           <h2>Ulasan</h2>
           <hr />
           <h2>Diskusi</h2>
@@ -314,17 +355,9 @@ const ProductDetail: NextPage = () => {
           <div></div>}
         </div>
         <div className={styles.cartDetail}>
-          <form>
-            <input type="text" {...register("qty")} id="qty" placeholder='1'value={qty}/>
-            <button>
-
-              <FaPlus></FaPlus>
-
-            </button>
-            <button>
-              <FaMinus></FaMinus>
-
-            </button>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <input type="number" {...register("qty")} id="qty" placeholder='1'/>
+ 
           <p>Stock: {dat?.product?.stock}</p>
           <input type="text" name="note" id="note" className={styles.notes} placeholder="note"/>
           <h4>Subtotal Rp {dat?.product?.price}</h4>
@@ -333,7 +366,12 @@ const ProductDetail: NextPage = () => {
 
           </form>
           <br />
-          <button className={styles.buttonSecondary}>Beli Langsung</button>
+          <button className={styles.buttonSecondary}>
+            <a href="/checkout">
+              Beli Langsung
+
+            </a>
+          </button>
           <div className={styles.icon}>
             <p className={styles.icons}>
               <a href="/chat">
@@ -346,7 +384,13 @@ const ProductDetail: NextPage = () => {
               </button>
             </p>
             <p className={styles.icons}>
+              <button  onClick={() => {
+                    navigator.clipboard.writeText(window.location.href)
+                  }}>
+
               <FaShare></FaShare> Share
+
+                  </button>
             </p>
           </div>
 

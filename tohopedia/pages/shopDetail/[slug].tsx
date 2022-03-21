@@ -193,7 +193,7 @@ const ShopDetail: NextPage = () => {
             <br /> <br /> <br />
         <ImageSlider slides={SliderData}></ImageSlider>
         <div className={styles.video}>
-
+          
         <video src="/video.mp4" autoPlay loop className={styles.video}></video>
         </div>
           <div className={styles.productContainerContent}>

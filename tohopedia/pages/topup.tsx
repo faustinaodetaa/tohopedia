@@ -53,7 +53,7 @@ async function onSubmit(){
     flag =true
   }
   console.log(flag)
-  }
+}
   if(flag){
     topup({
           variables:{
@@ -65,26 +65,15 @@ async function onSubmit(){
       
   }
 
-  // const target = document.getElementById("target")
-  // const btn = document.getElementById("first-button")
-  // btn?.onclick = function(){
-  //   if(target?.style.display !== "none"){
-  //     target?.style.display == "none"
-  //   }else{
-  //     target?.style.display == "block"
-
-  //   }
-  // }
   
   
   return(
     <div>
       <LoggedHeader></LoggedHeader>
-        <div>
           <h1 className={styles.title}>Top Up</h1>
-        </div>
 
-          <input type="number" id="topup" placeholder="Input top up nominal" {...register("topup")}/>
+<div className={styles.topupContainer}>
+          <input type="number" id="topup" placeholder="Input top up nominal" {...register("topup")}/> 
           <button type="submit" id="first-button" className={styles.button} onClick={()=>showCode()}>Top Up</button>
           <div className={styles.code} id="target">
             <p>Unique Code</p>
@@ -92,11 +81,14 @@ async function onSubmit(){
           </div>
           <div>
             <form onSubmit={handleSubmit(onSubmit)}>
-              <label htmlFor="">Input unique code above:</label>
+              <label htmlFor="">Input unique code above:</label> <br />
               <input type="text" id="code" {...register("code")}/>
               <button type="submit" className={styles.button} >Submit</button>
             </form>
           </div>
+
+</div>
+
         
       <Footer></Footer>
     </div>

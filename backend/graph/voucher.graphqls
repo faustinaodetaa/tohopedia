@@ -10,15 +10,27 @@ type Voucher{
   isGlobal: Boolean!
 }
 
+type UserVoucher{
+  id: ID!
+  user: User! @goField(forceResolver: true)
+  voucher: Voucher! @goField(forceResolver: true)
+}
+
 extend type Mutation{
   createVoucher(input: NewVoucher!): Voucher!
+  redeemVoucher(input: RedeemVoucher!): UserVoucher!
 }
 
 extend type Query{
   vouchers(shop:String!): [Voucher!]!
   globalVoucher: [Voucher!]!
   allVoucher: [Voucher!]!
+  userVouchers(user:String!): [UserVoucher!]!
+}
 
+input RedeemVoucher{
+  user: String!
+  voucher: String!
 }
 
 input NewVoucher{

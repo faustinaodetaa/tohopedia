@@ -32,6 +32,7 @@ func (r *mutationResolver) CreateTransaction(ctx context.Context, input model.Ne
 		AddressID: input.Address,
 		CourierID: input.Courier,
 		Date:      time.Now(),
+		VoucherID: input.Voucher,
 	}
 	err := db.Create(model).Error
 	return model, err
@@ -41,12 +42,27 @@ func (r *mutationResolver) CreateTransactionDetail(ctx context.Context, input mo
 	db := config.GetDB()
 
 	model := &model.TransactionDetail{
+		ID:            uuid.NewString(),
 		TransactionID: input.Transaction,
 		ProductID:     input.Product,
 		Qty:           input.Qty,
+		IsReviewed:    false,
 	}
 	err := db.Create(model).Error
 	return model, err
+}
+
+func (r *mutationResolver) UpdateStatus(ctx context.Context, product string) (*model.TransactionDetail, error) {
+	db := config.GetDB()
+	model := new(model.TransactionDetail)
+
+	if err := db.First(model, "product_id = ?", product).Error; err != nil {
+		return nil, err
+	}
+
+	model.IsReviewed = true
+
+	return model, db.Save(model).Error
 }
 
 func (r *queryResolver) UserTransaction(ctx context.Context, user string) ([]*model.Transaction, error) {
@@ -77,11 +93,11 @@ func (r *queryResolver) Transactions(ctx context.Context) ([]*model.Transaction,
 	return models, db.Find(&models).Error
 }
 
-func (r *queryResolver) TransactionDetails(ctx context.Context, transaction string, product string) ([]*model.TransactionDetail, error) {
+func (r *queryResolver) TransactionDetails(ctx context.Context, transaction string) ([]*model.TransactionDetail, error) {
 	db := config.GetDB()
 
 	var models []*model.TransactionDetail
-	return models, db.Where("transaction_id = ? and product_id = ?", transaction, product).Find(&models).Error
+	return models, db.Where("transaction_id = ?", transaction).Find(&models).Error
 }
 
 func (r *transactionResolver) User(ctx context.Context, obj *model.Transaction) (*model.User, error) {
@@ -112,6 +128,16 @@ func (r *transactionResolver) Courier(ctx context.Context, obj *model.Transactio
 	}
 
 	return courier, nil
+}
+
+func (r *transactionResolver) Voucher(ctx context.Context, obj *model.Transaction) (*model.Voucher, error) {
+	db := config.GetDB()
+	var voucher *model.Voucher
+	if err := db.Where("id = ?", obj.VoucherID).Find(&voucher).Error; err != nil {
+		return nil, err
+	}
+
+	return voucher, nil
 }
 
 func (r *transactionDetailResolver) Transaction(ctx context.Context, obj *model.TransactionDetail) (*model.Transaction, error) {
@@ -151,6 +177,18 @@ type transactionDetailResolver struct{ *Resolver }
 //  - When renaming or deleting a resolver the old code will be put in here. You can safely delete
 //    it when you're done.
 //  - You have helper methods in this file. Move them out to keep these resolver files clean.
+func (r *transactionDetailResolver) ID(ctx context.Context, obj *model.TransactionDetail) (string, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+func (r *transactionDetailResolver) IsReviewed(ctx context.Context, obj *model.TransactionDetail) (bool, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+func (r *transactionDetailResolver) Status(ctx context.Context, obj *model.TransactionDetail) (string, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+func (r *transactionResolver) Status(ctx context.Context, obj *model.Transaction) (string, error) {
+	panic(fmt.Errorf("not implemented"))
+}
 func (r *transactionResolver) Shop(ctx context.Context, obj *model.Transaction) (*model.Shop, error) {
 	panic(fmt.Errorf("not implemented"))
 

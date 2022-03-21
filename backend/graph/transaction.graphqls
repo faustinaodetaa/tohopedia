@@ -4,12 +4,15 @@ type Transaction{
   date: Time!
   address: Address! @goField(forceResolver:true)
   courier: Courier! @goField(forceResolver:true)
+  voucher: Voucher! @goField(forceResolver:true)
 }
 
 type TransactionDetail{
+  id: ID!
   transaction: Transaction! @goField(forceResolver:true)
   product: Product! @goField(forceResolver:true)
   qty: Int!
+  isReviewed: Boolean!
 }
 
 extend type Query{
@@ -18,18 +21,21 @@ extend type Query{
 
   userTransactionDetail(transaction:String!):[TransactionDetail!]!
   transactions: [Transaction!]!
-  transactionDetails(transaction:String!, product:String!): [TransactionDetail!]!
+  transactionDetails(transaction: String!): [TransactionDetail!]!
+
 }
 
 extend type Mutation{
   createTransaction(input: NewTransaction!):Transaction!
   createTransactionDetail(input: NewTransactionDetail!):TransactionDetail!
+  updateStatus(product:String!): TransactionDetail!
 }
 
 input NewTransaction{
   user:String!
   address: String!
   courier: String!
+  voucher:String!
 }
 
 input NewTransactionDetail{

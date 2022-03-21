@@ -22,5 +22,6 @@ func MigrateTable() {
 	db.AutoMigrate(&model.Voucher{})
 	db.AutoMigrate(&model.Transaction{})
 	db.AutoMigrate(&model.TransactionDetail{})
+	db.AutoMigrate(&model.UserVoucher{})
 
 }

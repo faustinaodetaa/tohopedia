@@ -38,6 +38,24 @@ func (r *mutationResolver) CreateVoucher(ctx context.Context, input model.NewVou
 	return model, err
 }
 
+func (r *mutationResolver) RedeemVoucher(ctx context.Context, input model.RedeemVoucher) (*model.UserVoucher, error) {
+	db := config.GetDB()
+	if ctx.Value("auth") == nil {
+		return nil, &gqlerror.Error{
+			Message: "no token",
+		}
+	}
+
+	model := &model.UserVoucher{
+		ID:        uuid.NewString(),
+		UserID:    input.User,
+		VoucherID: input.Voucher,
+	}
+
+	err := db.Create(model).Error
+	return model, err
+}
+
 func (r *queryResolver) Vouchers(ctx context.Context, shop string) ([]*model.Voucher, error) {
 	db := config.GetDB()
 
@@ -59,6 +77,33 @@ func (r *queryResolver) AllVoucher(ctx context.Context) ([]*model.Voucher, error
 	return models, db.Where("is_global = 0").Find(&models).Error
 }
 
+func (r *queryResolver) UserVouchers(ctx context.Context, user string) ([]*model.UserVoucher, error) {
+	db := config.GetDB()
+
+	var models []*model.UserVoucher
+	return models, db.Where("user_id = ?", user).Find(&models).Error
+}
+
+func (r *userVoucherResolver) User(ctx context.Context, obj *model.UserVoucher) (*model.User, error) {
+	db := config.GetDB()
+	var user *model.User
+	if err := db.Where("id = ?", obj.UserID).Find(&user).Error; err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func (r *userVoucherResolver) Voucher(ctx context.Context, obj *model.UserVoucher) (*model.Voucher, error) {
+	db := config.GetDB()
+	var voucher *model.Voucher
+	if err := db.Where("id = ?", obj.VoucherID).Find(&voucher).Error; err != nil {
+		return nil, err
+	}
+
+	return voucher, nil
+}
+
 func (r *voucherResolver) Shop(ctx context.Context, obj *model.Voucher) (*model.Shop, error) {
 	db := config.GetDB()
 	var shop *model.Shop
@@ -69,9 +114,13 @@ func (r *voucherResolver) Shop(ctx context.Context, obj *model.Voucher) (*model.
 	return shop, nil
 }
 
+// UserVoucher returns generated.UserVoucherResolver implementation.
+func (r *Resolver) UserVoucher() generated.UserVoucherResolver { return &userVoucherResolver{r} }
+
 // Voucher returns generated.VoucherResolver implementation.
 func (r *Resolver) Voucher() generated.VoucherResolver { return &voucherResolver{r} }
 
+type userVoucherResolver struct{ *Resolver }
 type voucherResolver struct{ *Resolver }
 
 // !!! WARNING !!!

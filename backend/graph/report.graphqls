@@ -1,0 +1,10 @@
+type DataMap {
+  count: Int!
+  additional: Int
+  name: String!
+}
+extend type Query {
+  voucherPerTransaction: [DataMap!]!
+  soldPerCategory: [DataMap!]!
+  transactionPerShipping: [DataMap!]!
+}

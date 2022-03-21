@@ -76,6 +76,30 @@ const Home: NextPage = () => {
 
   const {loading: l2, error: e2, data: d2} = useQuery(TOP_DISCOUNT_PRODUCT)
 
+  const PRODUCT_RECOMMENDATION = gql`
+    query ProductRecommendation{
+      productRecommendation{
+        id
+        name
+        images{
+          image
+        }
+        description
+        price
+        discount
+        stock
+        category{
+          name
+        }
+        shop{
+          name
+        }
+        soldCount
+        
+      }
+    }
+  `
+  const{loading: l3, error: e3, data: d3} = useQuery(PRODUCT_RECOMMENDATION)
 
 
 
@@ -112,15 +136,45 @@ const Home: NextPage = () => {
               </ul>
             </div>
             <div className={styles.productCard}>
-              {data?.getAllProduct?.map((data:any)=>{
-                return(
-                  <div className={styles.cardProductContainer}>
-                    <Card name={data?.name} price = {data?.price} discount = {data?.price - (data?.discount / 100 * data?.price)}  category =  {data?.category?.name} image = {data.images[0] ? data?.images[0]?.image : '/image.png'} shop = {data?.shop?.name} id={data?.id}></Card>
-                  </div>
-                )
-              })}
+              <br />
+              <div className={styles.productContainerContent}>
+                <h1>Top Discount Products</h1>
+                {d2?.topDiscountProduct?.map((d2:any)=>{
+                  return(
+                    <div className={styles.cardProductContainer}>
+                      <Card name={d2?.name} price = {d2?.price} discount = {d2?.price - (d2?.discount / 100 * d2?.price)} disc = {d2?.discount} category =  {d2?.category?.name} image = {d2?.images[0] ? d2?.images[0]?.image : '/image.png'} shop = {d2?.shop?.name} id={d2?.id}></Card>
+                    </div>
+                    
+                  )
+                })}
 
-            </div>
+              </div>
+              <br />
+              <div className={styles.productContainerContent}>
+                <h1>Product Recommendation</h1>
+                {d3?.productRecommendation?.map((d2:any)=>{
+                  return(
+                    <div className={styles.cardProductContainer}>
+                      <Card name={d2?.name} price = {d2?.price} discount = {d2?.price - (d2?.discount / 100 * d2?.price)} disc = {d2?.discount} category =  {d2?.category?.name} image = {d2?.images[0] ? d2?.images[0]?.image : '/image.png'} shop = {d2?.shop?.name} id={d2?.id}></Card>
+                    </div>
+                    
+                  )
+                })}
+
+              </div>
+              <br />
+              <div className={styles.productContainerContent}>
+                <h1>All Products</h1>
+                {data?.getAllProduct?.map((data:any)=>{
+                  return(
+                    <div className={styles.cardProductContainer}>
+                      <Card name={data?.name} price = {data?.price} discount = {data?.price - (data?.discount / 100 * data?.price)} disc={data?.discount} category =  {data?.category?.name} image = {data.images[0] ? data?.images[0]?.image : '/image.png'} shop = {data?.shop?.name} id={data?.id}></Card>
+                    </div>
+                  )
+                })}
+
+              </div>
+              </div>
 
 
         </div>
@@ -162,6 +216,19 @@ const Home: NextPage = () => {
               <div className={styles.productContainerContent}>
                 <h1>Top Discount Products</h1>
                 {d2?.topDiscountProduct?.map((d2:any)=>{
+                  return(
+                    <div className={styles.cardProductContainer}>
+                      <Card name={d2?.name} price = {d2?.price} discount = {d2?.price - (d2?.discount / 100 * d2?.price)} disc = {d2?.discount} category =  {d2?.category?.name} image = {d2?.images[0] ? d2?.images[0]?.image : '/image.png'} shop = {d2?.shop?.name} id={d2?.id}></Card>
+                    </div>
+                    
+                  )
+                })}
+
+              </div>
+              <br />
+              <div className={styles.productContainerContent}>
+                <h1>Product Recommendation</h1>
+                {d3?.productRecommendation?.map((d2:any)=>{
                   return(
                     <div className={styles.cardProductContainer}>
                       <Card name={d2?.name} price = {d2?.price} discount = {d2?.price - (d2?.discount / 100 * d2?.price)} disc = {d2?.discount} category =  {d2?.category?.name} image = {d2?.images[0] ? d2?.images[0]?.image : '/image.png'} shop = {d2?.shop?.name} id={d2?.id}></Card>

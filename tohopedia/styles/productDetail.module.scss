@@ -60,6 +60,12 @@ $font: Poppins;
   border-bottom: $darkgreen 1px solid;
 }
 
+.voucherContainer{
+  border: rgba(128, 128, 128, 0.336) 1px solid;
+  border-radius: 10px;
+  padding: 10px;
+}
+
 
 @media screen and (max-width:400px){
   .img{

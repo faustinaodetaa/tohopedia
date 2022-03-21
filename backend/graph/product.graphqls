@@ -38,8 +38,10 @@ extend type Query{
   productSearch(input: ProductFilter, order: String!): [Product!]!
   search(name: String!): [Product!]!
   getProductByShop(shopID: String!): [Product!]!
+  getThreeProductByShop(shopID: String!): [Product!]!
   topDiscountProduct: [Product!]!
   bestSellingProduct(shopID: String!): [Product!]!
+  productRecommendation: [Product!]!
   productPagination(limit:Int!, offset:Int!, shop:String!):[Product!]! @goField(forceResolver:true)
 }
 
@@ -50,7 +52,7 @@ extend type Mutation{
   updateProduct(id: ID! input: UpdateProduct!):Product!
   deleteProduct(id:ID!): Product!
   deleteImage(id:ID!):ProductImage!
-  updateReviewStatus(id: ID! input: UpdateReviewStatus): Product!
+  updateReviewStatus(id: ID!): Product!
 }
 
 input ProductFilter{
@@ -97,6 +99,3 @@ input UpdateProduct{
   category: String!
 }
 
-input UpdateReviewStatus{
-  isReviewed: Boolean!
-}

@@ -40,10 +40,10 @@ const AddShop: NextPage = () => {
     const [create, {loading, error, data}] = useMutation(ADD_SHOP_QUERY)
     console.log(data);
     const schema = yup.object({
-        phone: yup.string().required(),
         name: yup.string().required(),
         slug: yup.string().required(),
-        address: yup.string().required()
+        address: yup.string().required(),
+        phone: yup.string().required()
     }).required()
 
         const{register, handleSubmit, formState:{errors}} = useForm({
@@ -94,7 +94,7 @@ console.log(getCookie('currUser'))
                             <label htmlFor="phone">Masukkan No. HP-mu</label>
                             <br />
                             <input type="text" id="phone" {...register("phone")}/>
-                            <p className={styles.error}></p>
+                            <p className={styles.error}>{errors.phone?.message}</p>
                         </div>
                         <br />
                         <div className={styles.input}>
@@ -103,12 +103,13 @@ console.log(getCookie('currUser'))
                             <label htmlFor="name">Nama Toko</label>
                             <br />
                             <input type="text" id="name" {...register("name")}/>
+                            <p className={styles.error}>{errors.name?.message}</p>
                             <br />
                             <label htmlFor="slug">Nama Domain</label>
                             <br />
                             <input type="text" id="slug" {...register("slug")}/>
                             
-                            <p className={styles.error}></p>
+                            <p className={styles.error}>{errors.slug?.message}</p>
 
                         </div>
                         <br />
@@ -116,7 +117,7 @@ console.log(getCookie('currUser'))
                             <label htmlFor="address">Masukkan Alamat Tokomu</label>
                             <br />
                             <input type="text" id="address" {...register("address")}/>
-                            <p className={styles.error}></p>
+                            <p className={styles.error}>{errors.address?.message}</p>
                         </div>
                         <br />
                         

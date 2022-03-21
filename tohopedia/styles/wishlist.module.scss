@@ -38,6 +38,13 @@ $font: Poppins;
   font-family: $font
 }
 
+.productContainerContent{
+  display: flex;
+  // flex-direction: column;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
 
 @media screen and (max-width:400px){
   .container{

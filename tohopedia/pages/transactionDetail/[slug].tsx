@@ -48,6 +48,7 @@ const TransactionDetail: NextPage = () =>{
   const GET_TRANSACTION_DETAIL = gql`
     query UserTransactionDetail($transaction:String!){
       userTransactionDetail(transaction:$transaction){
+        id
         product{
           id
           name
@@ -63,8 +64,10 @@ const TransactionDetail: NextPage = () =>{
             points
             
           }
+          isReviewed
         }
         qty
+        isReviewed
       }
     }
   `
@@ -138,11 +141,15 @@ const TransactionDetail: NextPage = () =>{
                       <br />
                       <p>Payment Method: Tohopedia Balance</p>
                       <p>Payment Discounts: {d?.product?.discount / 100 * d?.product?.price}</p>
+                      {d?.isReviewed == '0'? 
                       <Link href={`/addReview/${d?.product?.id}`}>
                         <a>
                           <button className={styles.button}>Review Barang</button>
                         </a>
-                      </Link>
+                      </Link> : <button className={styles.button}>Sudah di review</button>
+                      
+                    }
+                      
                     </div>
 
                   )})):null}

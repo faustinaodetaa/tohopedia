@@ -160,6 +160,14 @@ $font: Poppins;
   
 }
 
+.categoryContent{
+  display: none;
+}
+
+.categoryContainer:hover .categoryContent{
+  display: block;
+}
+
 @media screen and (max-width: 400px){
   // .list{
   //   display: flex;

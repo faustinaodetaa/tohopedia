@@ -176,17 +176,17 @@ const Cart: NextPage = () => {
       }
     }
     `
-    const GET_VOUCHER = gql `
-      query AllVoucher{
-        allVoucher{
-          name
-          shop{
-            id
+    const GET_USER_VOUCHER = gql `	
+      query UserVouchers($user:String!){
+        userVouchers(user:$user){
+          voucher{
+            name
+            discount
           }
-          discount
         }
       }
     `
+
   
     const GET_GLOBAL_VOUCHER = gql`
       query GlobalVoucher{
@@ -203,9 +203,9 @@ const Cart: NextPage = () => {
     `
     
     const {loading: l6, error: e6, data: d6} = useQuery(GET_CURRENT_SHOP)
-    const {loading: l7, error: e7, data:d7} = useQuery(GET_VOUCHER,{
+    const {loading: l7, error: e7, data:d7} = useQuery(GET_USER_VOUCHER,{
       variables:{
-        shop: d6?.getShop?.id
+        user: d?.getCurrentUser?.id,
       }
     })
     const{loading: l8, error: e8, data:d8} = useQuery(GET_GLOBAL_VOUCHER)
@@ -369,15 +369,28 @@ const Cart: NextPage = () => {
               <h3>Vouchers</h3>
               <div className={styles.input}>
                 <div className={styles.voucherContainer}>
-                    <label htmlFor="vouchers">Voucher</label>
+                    <label htmlFor="vouchers">User Voucher</label>
                     <br />
                     <select {...register("voucher")}>
-                      {d7?.allVoucher?.length > 0 ?(
-                        d7?.allVoucher?.map((cat: any) =>{return(
-                          <option value={cat?.id} key={cat?.id}>{cat?.name} - {cat.discount}%</option>
+                      {d7?.userVouchers?.length > 0 ?(
+                        d7?.userVouchers?.map((cat: any) =>{return(
+                          <option value={cat?.id} key={cat?.id}>{cat?.voucher?.name} - {cat?.voucher?.discount}%</option>
                         )})
                       ):
-                        <option value="" key="">No Category</option>
+                        <option value="" key="">No Voucher Available</option>
+                    }
+                    
+                    </select>
+                    <br />
+                    <label htmlFor="vouchers">Global Voucher</label>
+                    <br />
+                    <select {...register("voucher")}>
+                      {d8?.globalVoucher?.length > 0 ?(
+                        d8?.globalVoucher?.map((cat: any) =>{return(
+                          <option value={cat?.id} key={cat?.id}>{cat?.name} - {cat?.discount}%</option>
+                        )})
+                      ):
+                        <option value="" key="">No Voucher Available</option>
                     }
                     
                     </select>
@@ -385,9 +398,18 @@ const Cart: NextPage = () => {
                 </div>
                 </div>
                 <h5>Shopping Summary</h5>
-              <p>Total Price {}</p>
-              <p>Total Discount </p>
-              <h5>Grand Total</h5>
+                {data?.getCartByUser?.length > 0 ? (data?.getCartByUser?.map((data:any)=>{return(
+                      <div>
+                        <h3>Total Discount Price</h3>
+                        
+                        <p>IDR {data?.product?.discount / 100 * data?.product?.price}</p>
+                        <h3>Subtotal</h3>
+                        <p {...register("total")}>IDR {(data?.product?.price - (data?.product?.discount / 100 * data?.product?.price)) * (data?.qty)} </p>
+                        <input type="hidden" {...register("total")} value={(data?.product?.price - (data?.product?.discount / 100 * data?.product?.price)) * (data?.qty)} />
+                      </div>
+
+                    )
+                    })) : null}   
               <button className={styles.button}>
                 <a href="/checkout">Buy</a>
               </button>

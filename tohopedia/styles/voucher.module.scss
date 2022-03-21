@@ -168,6 +168,13 @@ $font: Poppins;
   text-align: center;
 }
 
+.redeemContainer{
+  border: 1px grey solid;
+  border-radius: 5px;
+  padding: 20px;
+  margin: 50px;
+}
+
 @media screen and (max-width:400px){
   .editShopContainer{
     display: flex;

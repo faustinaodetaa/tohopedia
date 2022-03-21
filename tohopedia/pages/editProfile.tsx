@@ -158,6 +158,13 @@ const EditShop: NextPage = () => {
                                 Update Profile
                             </button>
                         </div>
+                <button className={styles.submit}>
+                  <a href="/addresses">
+                  Edit Address
+                    
+                  </a>
+                  </button>
+
                     </form>
                 </div>
             </div>

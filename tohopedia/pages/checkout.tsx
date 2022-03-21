@@ -81,24 +81,43 @@ const Checkout: NextPage = () =>{
     `
 
   const{loading: l4, error: e4, data:d4} = useQuery(GET_COURIERS)
-
-  const GET_VOUCHER = gql `
-  query AllVoucher{
-    allVoucher{
-      id
-      name
-      shop{
+// console.log(d4?.couriers[0]?.id)
+  const GET_USER_VOUCHER = gql `	
+  query UserVouchers($user:String!){
+    userVouchers(user:$user){
+      voucher{
         id
+        name
+        discount
       }
-      discount
     }
   }
 `
-  const{loading:l5, error:e5, data:d5} = useQuery(GET_VOUCHER)
 
+  const GET_GLOBAL_VOUCHER = gql`
+  query GlobalVoucher{
+    globalVoucher{
+      name
+      description
+      discount
+      tnc
+      startTime
+      endTime
+      isGlobal
+    }
+  }
+`
+const {loading: l5, error: e5, data:d5} = useQuery(GET_USER_VOUCHER,{
+  variables:{
+    user: d?.getCurrentUser?.id,
+  }
+})
+const{loading: l10, error: e10, data:d10} = useQuery(GET_GLOBAL_VOUCHER)
+
+console.log(d5?.userVouchers[0]?.voucher?.id)
   const CREATE_TRANSACTION = gql`
-    mutation CreateTransaction($user:String!, $address:String!, $courier:String!){
-      createTransaction(input:{user:$user, address:$address, courier:$courier}){
+    mutation CreateTransaction($user:String!, $address:String!, $courier:String!, $voucher: String!){
+      createTransaction(input:{user:$user, address:$address, courier:$courier, voucher:$voucher}){
         id
       }
     }
@@ -140,12 +159,13 @@ const Checkout: NextPage = () =>{
 
   async function createTransaction(data:any) {
     try{
-      console.log(data.courier)
+      console.log(data.voucher)
       await addTransaction({
         variables:{
           user: d?.getCurrentUser?.id,
           address: data.address,
-          courier: data.courier
+          courier: data.courier,
+          voucher: data.voucher
         }
       })
     }catch(error){
@@ -176,17 +196,23 @@ const Checkout: NextPage = () =>{
 
   }
 
-  // if(d7){
-  //   console.log("delete cart")
-  //   deleteCart({
-  //     variables:{
-  //       id: d?.getCurrentUser?.id
-  //     }
-  //   })
-  // }
+
 
 
   const{register, handleSubmit, formState:{errors}} = useForm()
+let totalDisc = 0;
+let subtotal = 0
+  {d3?.getCartByUser?.map((data:any)=>{return(
+    totalDisc += data?.product?.discount / 100 * data?.product?.price
+  )})}
+  {d3?.getCartByUser?.map((data:any)=>{return(
+    subtotal +=(data?.product?.price - (data?.product?.discount / 100 * data?.product?.price)) * (data?.qty)
+
+  )})}
+  console.log(totalDisc)
+  console.log(subtotal)
+
+
 
   if(l || l2 || l3 || l4){
     return(
@@ -215,11 +241,11 @@ const Checkout: NextPage = () =>{
                           <option value={cat?.id} key={cat?.id}>{cat?.title} {cat.location} {cat.city}</option>
                         )})
                       ):
-                        <option value="" key="">No Shipping </option>
+                        <option value="" key="">No ADdress </option>
                     }
                     
                     </select>
-                    <p className={styles.error}></p>
+                    <p className={styles.error}>{errors.address?.message}</p>
                 </div>
               </div>
             </div>
@@ -248,6 +274,15 @@ const Checkout: NextPage = () =>{
                       </div>
                       
                     </div>
+
+                    {/* {d3?.getCartByUser?.length > 0 ? (d3?.getCartByUser?.map((data:any)=>{}} */}
+
+                  </div>                 
+                </div>
+              )
+            })):
+            <div>No Items in Cart</div>
+          }
                     <div className={styles.shipping}>
                     <h3>Pilih Pengiriman</h3>
                       <div className={styles.shippingContent}>
@@ -264,21 +299,33 @@ const Checkout: NextPage = () =>{
                             }
                             
                             </select>
-                            <p className={styles.error}></p>
+                            <p className={styles.error}>{errors.courier?.message}</p>
                         </div>
                       </div>
 
                     </div>
-
                     <div className={styles.voucherContainer}>
                       <h3>Vouchers</h3>
                       {/* <input type="number" onChange={(e) => setState(e.target.valueAsNumber)}/>  */}
                       <div className={styles.input}>
-                            <label htmlFor="vouchers">Voucher</label>
+                            <label htmlFor="vouchers">User Voucher</label>
                             <br />
                             <select {...register("voucher")}>
-                              {d5?.allVoucher?.length > 0 ?(
-                                d5?.allVoucher?.map((cat: any) =>{return(
+                              {d5?.userVouchers?.length > 0 ?(
+                                d5?.userVouchers?.map((cat: any) =>{return(
+                                  <option value={cat?.voucher?.id} key={cat?.voucher?.id}>{cat?.voucher?.name} - {cat?.voucher?.discount}%</option>
+                                )})
+                              ):
+                                <option value="" key="">No Category</option>
+                            }
+                            
+                            </select>
+                            <br />
+                            <label htmlFor="vouchers">Global Voucher</label>
+                            <br />
+                            <select>
+                              {d10?.globalVoucher?.length > 0 ?(
+                                d10?.globalVoucher?.map((cat: any) =>{return(
                                   <option value={cat?.id} key={cat?.id}>{cat?.name} - {cat?.discount}%</option>
                                 )})
                               ):
@@ -286,30 +333,19 @@ const Checkout: NextPage = () =>{
                             }
                             
                             </select>
-                            <p className={styles.error}></p>
+                            <p className={styles.error}>{errors.voucher?.message}</p>
                         </div>
                     </div>
-                    {/* {d3?.getCartByUser?.length > 0 ? (d3?.getCartByUser?.map((data:any)=>{}} */}
+            <div>
+              <h3>Total Discount Price</h3>
+              
+              <p>IDR {totalDisc}</p>
+              <h3>Subtotal</h3>
+              <p>IDR {subtotal}</p>
 
-                    {d3?.getCartByUser?.length > 0 ? (d3?.getCartByUser?.map((data:any)=>{return(
-                      <div>
-                        <h3>Total Discount Price</h3>
-                        
-                        <p>IDR {data?.product?.discount / 100 * data?.product?.price}</p>
-                        <h3>Subtotal</h3>
-                        <p {...register("total")}>IDR {(data?.product?.price - (data?.product?.discount / 100 * data?.product?.price)) * (data?.qty)} </p>
-                        <input type="hidden" {...register("total")} value={(data?.product?.price - (data?.product?.discount / 100 * data?.product?.price)) * (data?.qty)} />
-                      </div>
-
-                    )
-                    })) : null}     
-                  </div>                 
-                </div>
-              )
-            })):
-            <div>No Items in Cart</div>
-            }
-
+            </div>
+   
+              <input type="hidden" {...register("total")} value={subtotal} />
             <button type="submit" className={styles.button}>Pay</button>
 
       </div>
