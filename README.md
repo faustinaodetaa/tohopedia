@@ -5,7 +5,7 @@ Preview:
 ![Frame 5](https://user-images.githubusercontent.com/86879174/170739054-b8a6e0e1-2767-4446-8ee3-ae369ef73764.png)
 
 Pages:
-| | | |
+| | |
 |:-------------------------:|:-------------------------:|
 |![login new](https://user-images.githubusercontent.com/86879174/170739218-dd9f94af-47f5-43e2-a701-af2361b89fd6.jpg)|![new new](https://user-images.githubusercontent.com/86879174/170739226-c6a04d72-83fd-4b10-b17c-72a5138adb3a.png)|
 |![Screenshot_1](https://user-images.githubusercontent.com/86879174/170739255-8646a5a6-fc5b-44fb-8a67-5f1599857c12.png)|![Screenshot_2](https://user-images.githubusercontent.com/86879174/170739259-d52c35c5-2eb2-47e3-ac2a-019401f6e880.png)|
